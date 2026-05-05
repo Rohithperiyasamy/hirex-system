@@ -1,116 +1,133 @@
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/fcbccd5c-4b79-4c7f-b143-3fa2a9fe33d1" alt="Evalio Banner" width="100%"/>
-  
-  # Evalio - AI Technical Interviewer
-  
-  *Revolutionizing Technical Hiring with Artificial Intelligence*
-  
-  ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-  ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-  ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-  ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-  ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-  ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-  ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-  ![Ollama](https://img.shields.io/badge/Ollama-000000.svg?style=for-the-badge&logo=ollama&logoColor=white)
-  
-</div>
+
+
+# Hirex — AI-Powered Automated Technical Interview System
+
+> *An IoT-Based AI Interview Platform with Real-Time Assessment and Secure Proctoring*
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi-C51A4A?style=for-the-badge&logo=Raspberry-Pi&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+
+---
 
 ## 🚀 Overview
 
-Evalio is a cutting-edge AI-powered technical interview platform that streamlines the hiring process for companies. It conducts automated technical interviews, provides real-time candidate assessment, and generates comprehensive reports to help HR teams make informed hiring decisions.
+**Hirex** is an end-to-end AI-powered automated technical interview platform built with **Django (Python)** and **Large Language Models** (LLaMA 3.2 via Ollama / Google Gemini 1.5 Flash). It conducts fully voice-driven technical interviews, evaluates candidates in real time across multiple dimensions, and enforces interview integrity through a **dual-layer proctoring system** — OpenCV-based software proctoring in the browser and hardware-level monitoring via **Raspberry Pi 3 with Camera Module 3**.
+
+Submitted as final year MCA project at **Muthayammal Engineering College (Autonomous), Anna University** — April 2026.
+
+---
 
 ## ✨ Key Features
 
-### 🤖 AI-Powered Interviews
-- **Dynamic Question Generation**: AI adapts questions based on job requirements and candidate responses
-- **Real-time Speech Recognition**: Natural conversation with advanced speech analysis using Web Speech API
-- **Voice Synthesis**: AI interviewer with natural speech capabilities
-- **LLaMA 3.2 Integration**: Powered by Ollama for intelligent conversation flow
+### 🤖 AI Interview Engine
+- **Adaptive Question Generation** — LLaMA 3.2 (local via Ollama) or Gemini 1.5 Flash (cloud fallback) generates context-aware follow-up questions based on the candidate's resume, job role, and conversation history
+- **Voice-Driven Interface** — `webkitSpeechRecognition` for candidate speech input; `SpeechSynthesis` API for AI voice output — no page reloads, fully conversational
+- **Resume Parsing** — PyMuPDF (`fitz`) extracts text from Google Drive-hosted resume PDFs at session start
+- **10-Round Structured Interview** — automatically terminates after 10 exchanges and triggers evaluation
+- **Dual AI Provider with Auto-Fallback** — seamlessly switches between Ollama and Gemini on connection failure
 
-### 📊 Comprehensive Analytics
-- **Performance Metrics**: Evaluates accuracy, communication, technical depth, and cultural fit
-- **Bias Reduction**: Standardized evaluation criteria to minimize unconscious bias
-- **Detailed Reports**: Comprehensive candidate assessments with hiring recommendations
-- **PDF Report Generation**: Downloadable detailed assessment reports
+### 🔒 Dual-Layer Proctoring
+- **Software Proctoring** — browser captures webcam frames via HTML5 Canvas every 5 seconds, sends as base64 to Django backend for OpenCV Haar Cascade face detection
+- **IoT Hardware Proctoring** — Raspberry Pi 3 with Camera Module 3 runs an independent Python script using `Picamera2` + OpenCV, sends authenticated violation events to `/iot/event/` via HTTP POST
+- **Violation Scoring** — `>3` multiple-face frames → `cheating`; `>5` face-absent frames → `suspicious`; all events timestamped and logged to SQLite
 
-### 🔒 Security & Monitoring
-- **Automated Proctoring**: Real-time monitoring with face detection and malpractice detection
-- **Secure Access**: Token-based authentication with session management
-- **Image Analysis**: OpenCV-based face detection for interview integrity
+### 📊 Evaluation & Reporting
+- **Multi-Dimensional Scoring** — Accuracy (word overlap %), Communication (Low/Medium/High by word count), Technical Depth (30+ skill keyword matches), Good Fit (≥3 required skills mentioned)
+- **AI-Generated Strengths & Weaknesses** — separate LLM call on full transcript, parsed into 3 bullet points each
+- **PDF Report Generation** — PyMuPDF draws A4 reports with candidate info, metrics table, and complete IoT violation log; generated in under 1.2 seconds
+- **HR Dashboard** — live pipeline with candidate status, proctoring scores, and one-click report download
 
-### 📋 Management Features
-- **Candidate Pipeline**: Upload and manage candidates via Excel files
-- **Interview Scheduling**: Automated scheduling with email notifications
-- **Dashboard Analytics**: Monitor all interviews and candidate progress through [Templates/dashboard.html](Templates/dashboard.html)
-- **Feedback System**: Post-interview feedback collection via [Templates/feedback.html](Templates/feedback.html)
+### 🛠️ HR Management
+- **Excel Bulk Upload** — `pandas.read_excel()` processes candidate data (Name, Email, Job Role, Experience, Resume Link)
+- **Automated Scheduling** — slots filled 7 days ahead, up to 3 candidates/hour between 9AM–9PM
+- **Email Invitations** — unique 32-character token links dispatched via Django + Gmail SMTP
+- **OTP-Verified HR Registration** — 6-digit OTP with 5-minute expiry, PBKDF2-SHA256 password hashing
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Django (Python 3.x)
-- **Frontend**: HTML5, CSS3, JavaScript, TailwindCSS
-- **Database**: SQLite
-- **AI/ML**: Ollama (LLaMA 3.2) / Gemini API 
-- **Speech Processing**: Web Speech API (webkitSpeechRecognition)
-- **Computer Vision**: OpenCV for proctoring
-- **File Processing**: PyMuPDF for PDF handling
-- **Authentication**: Django Authentication System
+| Layer | Technology |
+|---|---|
+| **Backend** | Django 5.1 (Python 3.10+) |
+| **AI / LLM (Local)** | Ollama with LLaMA 3.2 |
+| **AI / LLM (Cloud Fallback)** | Google Gemini 1.5 Flash API |
+| **Speech Processing** | Web Speech API (browser-native) |
+| **Computer Vision** | OpenCV 4.x (Haar Cascade) |
+| **PDF Processing** | PyMuPDF (fitz) 1.25+ |
+| **IoT Hardware** | Raspberry Pi 3 Model B + Camera Module 3 |
+| **Database** | SQLite via Django ORM |
+| **Data Processing** | pandas (Excel upload) |
+| **Frontend** | Django Templates, HTML5, CSS3, JavaScript |
+| **Auth** | Token-based (secrets.token_hex) + OTP + Django sessions |
+
+---
 
 ## 📁 Project Structure
 
 ```
-Evalio/
-├── Authentication/          # User authentication module
+hirex-system/
+├── Authentication/         # HR registration, OTP verification, login/logout
 │   ├── models.py
 │   ├── views.py
 │   └── urls.py
-├── Hr/                     # HR management functionality
+├── Hr/                     # HR dashboard, candidate scheduling, report download
 │   ├── models.py
-│   ├── views.py
+│   ├── views.py            # download_report_pdf(), schedule_next_interview()
 │   └── urls.py
-├── Myapp/                  # Core application logic
-│   ├── models.py          # Database models
-│   ├── views.py           # Application views
-│   ├── utils.py           # AI utilities and evaluation functions
-│   └── urls.py            # URL routing
-├── Templates/             # HTML templates
-│   ├── homepage.html      # Landing page
-│   ├── dashboard.html     # HR dashboard
-│   ├── interview.html     # Interview interface
-│   ├── feedback.html      # Post-interview feedback
-│   ├── ResultReport.html  # Assessment reports
-│   ├── login.html         # Authentication pages
-│   └── updatedSignup.html
-├── Evalio/               # Django project settings
+├── Myapp/                  # Core interview engine, proctoring, evaluation
+│   ├── models.py           # interviewSchedule, IoTViolation, Feedback
+│   ├── views.py            # tool(), iot_event(), join()
+│   ├── utils.py            # ai_response(), generate(), pdf_ocr(), evaluation()
+│   └── urls.py
+├── Hirex/                  # Django project settings
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
-├── db.sqlite3            # Database file
-├── manage.py             # Django management script
-├── requirements.txt      # Python dependencies
+├── Templates/              # Django HTML templates
+│   ├── interview.html      # Voice interview UI with live waveform
+│   ├── dashboard.html      # HR dashboard
+│   ├── ResultReport.html   # Evaluation results view
+│   ├── feedback.html       # Post-interview candidate feedback
+│   └── login.html
+├── iot_proctor.py          # Raspberry Pi proctoring script (Picamera2 + OpenCV)
+├── db.sqlite3
+├── manage.py
+├── requirements.txt
 └── README.md
 ```
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.8+
-- pip (Python package manager)
-- Git
-- Ollama (for local AI model hosting)
+- Python 3.10+
+- pip
+- [Ollama](https://ollama.ai) installed with LLaMA 3.2 pulled
+- Google Gemini API key (for cloud fallback)
+- Raspberry Pi 3 with Camera Module 3 (optional — for full IoT proctoring)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/evalio.git
-   cd evalio
+   git clone https://github.com/Rohithperiyasamy/hirex-system.git
+   cd hirex-system
    ```
 
-2. **Create virtual environment**
+2. **Create and activate a virtual environment**
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source venv/bin/activate        # Windows: venv\Scripts\activate
    ```
 
 3. **Install dependencies**
@@ -118,143 +135,127 @@ Evalio/
    pip install -r requirements.txt
    ```
 
-4. **Set up Ollama and LLaMA 3.2**
+4. **Set up environment variables** — create a `.env` file:
+   ```env
+   SECRET_KEY=your-django-secret-key
+   EMAIL_HOST_USER=your@gmail.com
+   EMAIL_HOST_PASSWORD=your-app-password
+   GEMINI_API_KEY=your-gemini-api-key
+   IOT_SECRET_KEY=hirex-iot-secret
+   AI_PROVIDER=ollama          # or 'gemini'
+   OLLAMA_MODEL=llama3.2:latest
+   ```
+
+5. **Pull LLaMA 3.2 via Ollama**
    ```bash
-   # Install Ollama
-   curl -fsSL https://ollama.ai/install.sh | sh
-   
-   # Pull LLaMA 3.2 model
    ollama pull llama3.2
    ```
 
-5. **Set up database**
+6. **Set up the database**
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-6. **Create superuser (optional)**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Run the development server**
+7. **Run the server**
    ```bash
    python manage.py runserver
    ```
 
 8. **Access the application**
-   - Open your browser and navigate to `http://127.0.0.1:8000/`
+   - HR Portal: `http://127.0.0.1:8000/auth/login/`
+   - HR Dashboard: `http://127.0.0.1:8000/hr/dashboard/`
 
-## 📖 Usage
+### IoT Proctoring Setup (Raspberry Pi)
 
-### For HR Managers
+```bash
+# On the Raspberry Pi
+pip install picamera2 opencv-python requests
+# Edit HIREX_URL and CANDIDATE_TOKEN in iot_proctor.py
+python iot_proctor.py
+```
 
-1. **Sign Up/Login**: Create an HR account using [Templates/updatedSignup.html](Templates/updatedSignup.html)
-2. **Dashboard Access**: Use [Templates/dashboard.html](Templates/dashboard.html) to manage interviews
-3. **Upload Candidates**: Import candidate information via Excel files
-4. **Schedule Interviews**: System automatically schedules and sends email invitations
-5. **Monitor Progress**: Track interview completion and review analytics
-6. **Generate Reports**: Download detailed PDF reports via [Templates/ResultReport.html](Templates/ResultReport.html)
-
-### For Candidates
-
-1. **Receive Invitation**: Get email invitation with unique interview link
-2. **Join Interview**: Access [Templates/interview.html](Templates/interview.html) to start the AI interview
-3. **Complete Assessment**: Answer questions naturally through voice interaction
-4. **Automated Proctoring**: System monitors interview integrity using computer vision
-5. **Provide Feedback**: Submit post-interview feedback via [Templates/feedback.html](Templates/feedback.html)
-
-## 🔧 Configuration
-
-### AI Model Setup
-The evaluation system is configured in [`Myapp/utils.py`](Myapp/utils.py):
-- Configure Ollama endpoint for LLaMA 3.2
-- Customize evaluation criteria and scoring metrics
-- Set required skills and nice-to-have skills for technical evaluation
-
-### Proctoring System
-Automated proctoring features include:
-- Face detection using OpenCV
-- Malpractice detection through image analysis
-- Real-time monitoring during interviews
+---
 
 ## 📊 Evaluation Methodology
 
-The AI evaluation system assesses candidates across multiple dimensions:
+After 10 interview rounds, the `evaluation()` function scores candidates across four dimensions:
 
-1. **Accuracy**: Relevance of answers to questions asked
-2. **Communication**: Clarity and elaboration in responses  
-3. **Technical Depth**: Presence of domain-specific terminology
-4. **Cultural/Role Fit**: Alignment with job requirements
+| Metric | Method |
+|---|---|
+| **Accuracy** | Word overlap between candidate answers and interviewer questions (%) |
+| **Communication** | Word count classification — ≤3: Low, 4–60: Medium, >60: High |
+| **Technical Depth** | Count of 30+ domain skill keywords found across all answers |
+| **Good Fit** | True if ≥3 required skills mentioned |
 
-Each metric is calculated using sophisticated algorithms detailed in the [`info.txt`](info.txt) documentation.
+Strengths and weaknesses are separately generated by an LLM call on the full transcript.
 
-## 🎯 Key Features Breakdown
+---
 
-### Interview Process
-- **Dynamic Questioning**: AI adapts questions based on candidate responses
-- **Speech Recognition**: Real-time transcription and analysis
-- **Voice Synthesis**: Natural AI interviewer voice
-- **Session Management**: Token-based secure interview sessions
+## 🗄️ Database Schema
 
-### Analytics & Reporting
-- **Performance Metrics**: Comprehensive candidate evaluation
-- **PDF Generation**: Professional interview reports
-- **Dashboard Insights**: Real-time analytics for HR teams
-- **Feedback Collection**: Post-interview candidate feedback
+Three core models:
+- **`Hr`** — HR account with hashed password, OTP fields, session key
+- **`interviewSchedule`** — candidate info, secure token, scheduled time, all evaluation scores, IoT violation log (JSON), proctoring score
+- **`Feedback`** — candidate post-interview rating and comments (FK → interviewSchedule)
 
-### Security Features
-- **Proctoring System**: Computer vision-based monitoring
-- **Secure Authentication**: Django-based user management
-- **Session Tokens**: Secure interview access control
+---
+
+## 🎓 Academic Details
+
+**Project Title**: An IoT Based AI-Powered Automated Technical Interview System with Real-Time Assessment and Secure Proctoring  
+**Degree**: Master of Computer Applications (MCA)  
+**Institution**: Muthayammal Engineering College (Autonomous), Rasipuram — Anna University  
+**Project Period**: January 2026 – April 2026  
+**Guide**: Mrs. C. Radha, MCA., M.Phil.
+
+---
+
+## 🔮 Future Enhancements
+
+- LPWAN (NB-IoT / LoRa) support for Raspberry Pi in low-WiFi environments
+- Emotion and stress analysis using DeepFace on IoT camera frames
+- Live coding assessment module (Monaco / CodeMirror editor)
+- Migration from SQLite to PostgreSQL for multi-user production deployment
+- ATS integration (Zoho Recruit, Greenhouse) via API
+
+---
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add YourFeature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👥 Team
-
-**Developed by:**
-- Akash Kumar Gupta (10800221055)
-- Samarjit Banerjee (10800221056)
-- Pritam Sarbajna (10800222135)
-- Md Athar Ansari (10800222137)
-
-**Under the guidance of:**
-- Dr. Sheuli Chakraborty, Assistant Professor, HOD Dept of CSBS
-- Information Technology, Asansol Engineering College
-
-## 🙏 Acknowledgments
-
-- **Asansol Engineering College** for providing the platform for this project
-- **Ollama** for local AI model hosting capabilities
-- **Django Community** for the robust web framework
-- **TailwindCSS** for responsive design
-- **OpenCV** for computer vision capabilities
-
-## 📞 Support
-
-For support and questions:
-- Email: banerjeesamarjit9@gmail.com
-- Issues: [GitHub Issues](https://github.com/MrSamarjitBanerjee/Evalio/issues)
-- Documentation: See [info.txt](info.txt) for detailed project information
 
 ---
 
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👤 Author
+
+**Rohith P** (Reg. No.: 24MC024)  
+MCA Final Year | Muthayammal Engineering College, Anna University  
+📧 rohithperiyasamy7@gmail.com  
+🔗 [linkedin.com/in/rohith74](https://linkedin.com/in/rohith74) | [github.com/Rohithperiyasamy](https://github.com/Rohithperiyasamy)
+
+---
+
+*Built with Python, patience, and a Raspberry Pi that actually worked.*
+
+
+
+
 <div align="center">
-  <p>Made with ❤️ by the Evalio Team</p>
-  <p>© 2025 Evalio Inc. All rights reserved.</p>
+  <p>Made with ❤️ by Rohith P</p>
+  <p>© 2026 Hirex Inc. All rights reserved.</p>
   
-  **Asansol Engineering College | Information Technology Department**
+  **Muthayammal Engineering College | MCA Department**
 </div>
-#   h i r e x - s y s t e m  
- 
+# hirex-system
+
