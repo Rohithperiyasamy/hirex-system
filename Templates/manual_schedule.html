@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <title>Manual Interview Scheduling - Evalio</title>
+  
+  <style>
+    body {
+      background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 0;
+      overflow: auto;
+      font-family: "Inter", serif;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .btn {
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      padding: 0.75rem 1.5rem;
+      justify-content: center;
+      align-items: center;
+      gap: 0.625rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.297);
+      background: rgba(98, 42, 154, 0.887);
+      box-shadow: 0px 0px 6px 3px rgba(255, 255, 255, 0.406) inset;
+      backdrop-filter: blur(14px);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: rgba(98, 42, 154, 1);
+      transform: translateY(-2px);
+      box-shadow: 0px 4px 15px rgba(98, 42, 154, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .h-txt {
+      background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.5rem;
+      color: #ffffff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #9e29d0;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 10px rgba(158, 41, 208, 0.3);
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .success-message {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #10b981;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #ef4444;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .required {
+      color: #ef4444;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen p-4 text-white">
+  <div class="max-w-4xl mx-auto p-2" style="width: 100%;">
+    
+    <!-- Navigation -->
+    <nav class="backdrop-blur-md bg-white/20 border border-white/30 rounded-xl mx-4 mt-4 shadow-lg mb-8">
+      <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-12">
+          <div class="flex items-center">
+            <a href="/evalio" class="text-lg font-semibold text-white drop-shadow-sm" style="color: #9e29d0;">Evalio</a>
+            <span class="ml-4 text-white">Manual Interview Scheduling</span>
+          </div>
+          <div class="flex space-x-4 items-center">
+            <a href="/hr/dashboard/" class="text-white hover:text-blue-200 transition">
+              <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Title -->
+    <h1 class="text-4xl font-extrabold text-center mb-8 sm:text-5xl">
+      <span class="h-txt">Schedule Interview Manually</span>
+    </h1>
+
+    <!-- Success/Error Messages -->
+    <div id="successMessage" class="success-message">
+      <i class="fas fa-check-circle mr-2"></i>
+      Interview scheduled successfully! Email sent to candidate.
+    </div>
+    <div id="errorMessage" class="error-message">
+      <i class="fas fa-exclamation-circle mr-2"></i>
+      <span id="errorText">An error occurred. Please try again.</span>
+    </div>
+
+    <!-- Main Form -->
+    <div class="glass rounded-lg shadow-xl p-8 max-w-3xl mx-auto">
+      <form id="scheduleForm" method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- Candidate Information Section -->
+        <div class="border-b border-white/20 pb-6 mb-6">
+          <h2 class="text-xl font-bold text-white mb-4">
+            <i class="fas fa-user mr-2"></i>Candidate Information
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+              <label for="name" class="form-label">
+                Full Name <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-input" 
+                placeholder="Enter candidate's full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">
+                Email Address <span class="required">*</span>
+              </label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-input" 
+                placeholder="candidate@example.com"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="jobRole" class="form-label">
+                Job Role <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="jobRole" 
+                name="jobRole" 
+                class="form-input" 
+                placeholder="e.g., Software Engineer, Data Scientist"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="experience" class="form-label">
+                Experience (Years) <span class="required">*</span>
+              </label>
+              <input 
+                type="number" 
+                id="experience" 
+                name="experience" 
+                class="form-input" 
+                placeholder="e.g., 3"
+                min="0"
+                step="0.5"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="resume" class="form-label">
+              Resume Link <span class="required">*</span>
+            </label>
+            <input 
+              type="url" 
+              id="resume" 
+              name="resume" 
+              class="form-input" 
+              placeholder="https://example.com/resume.pdf"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Interview Scheduling Section -->
+        <div class="border-b border-white/20 pb-6 mb-6">
+          <h2 class="text-xl font-bold text-white mb-4">
+            <i class="fas fa-calendar-alt mr-2"></i>Interview Schedule
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+              <label for="interviewDate" class="form-label">
+                Interview Date <span class="required">*</span>
+              </label>
+              <input 
+                type="date" 
+                id="interviewDate" 
+                name="interviewDate" 
+                class="form-input"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="interviewTime" class="form-label">
+                Interview Time <span class="required">*</span>
+              </label>
+              <input 
+                type="time" 
+                id="interviewTime" 
+                name="interviewTime" 
+                class="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" id="useAutoSchedule" class="mr-2">
+              Use automatic scheduling (ignores manual date/time above)
+            </label>
+          </div>
+        </div>
+
+        <!-- Additional Notes Section -->
+        <div class="mb-6">
+          <h2 class="text-xl font-bold text-white mb-4">
+            <i class="fas fa-sticky-note mr-2"></i>Additional Information
+          </h2>
+          
+          <div class="form-group">
+            <label for="notes" class="form-label">
+              Special Instructions (Optional)
+            </label>
+            <textarea 
+              id="notes" 
+              name="notes" 
+              class="form-textarea" 
+              rows="3"
+              placeholder="Any special instructions or notes for the candidate..."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button type="submit" class="btn">
+            <i class="fas fa-calendar-plus mr-2"></i>
+            Schedule Interview
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">
+            <i class="fas fa-undo mr-2"></i>
+            Reset Form
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('interviewDate').setAttribute('min', today);
+      
+      // Set default date to 7 days from now
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      document.getElementById('interviewDate').value = nextWeek.toISOString().split('T')[0];
+      
+      // Set default time to 9:00 AM
+      document.getElementById('interviewTime').value = '09:00';
+    });
+
+    // Auto-schedule checkbox functionality
+    document.getElementById('useAutoSchedule').addEventListener('change', function() {
+      const dateInput = document.getElementById('interviewDate');
+      const timeInput = document.getElementById('interviewTime');
+      
+      if (this.checked) {
+        dateInput.disabled = true;
+        timeInput.disabled = true;
+        dateInput.style.opacity = '0.5';
+        timeInput.style.opacity = '0.5';
+      } else {
+        dateInput.disabled = false;
+        timeInput.disabled = false;
+        dateInput.style.opacity = '1';
+        timeInput.style.opacity = '1';
+      }
+    });
+
+    // Form submission
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Scheduling...';
+      submitBtn.disabled = true;
+      
+      fetch('/hr/manual-schedule/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById('successMessage').style.display = 'block';
+          document.getElementById('errorMessage').style.display = 'none';
+          this.reset();
+          
+          // Reset date and time to defaults
+          const nextWeek = new Date();
+          nextWeek.setDate(nextWeek.getDate() + 7);
+          document.getElementById('interviewDate').value = nextWeek.toISOString().split('T')[0];
+          document.getElementById('interviewTime').value = '09:00';
+          
+          // Scroll to top to show success message
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          document.getElementById('errorMessage').style.display = 'block';
+          document.getElementById('successMessage').style.display = 'none';
+          document.getElementById('errorText').textContent = data.message || 'An error occurred. Please try again.';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('successMessage').style.display = 'none';
+        document.getElementById('errorText').textContent = 'Network error. Please check your connection and try again.';
+      })
+      .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      });
+    });
+
+    function resetForm() {
+      document.getElementById('scheduleForm').reset();
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'none';
+      
+      // Reset to defaults
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      document.getElementById('interviewDate').value = nextWeek.toISOString().split('T')[0];
+      document.getElementById('interviewTime').value = '09:00';
+      
+      // Reset auto-schedule checkbox
+      const autoScheduleCheckbox = document.getElementById('useAutoSchedule');
+      const dateInput = document.getElementById('interviewDate');
+      const timeInput = document.getElementById('interviewTime');
+      
+      autoScheduleCheckbox.checked = false;
+      dateInput.disabled = false;
+      timeInput.disabled = false;
+      dateInput.style.opacity = '1';
+      timeInput.style.opacity = '1';
+    }
+  </script>
+</body>
+</html>

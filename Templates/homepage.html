@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Home</title>
+  </head>
+  <style>
+    body {
+      background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+      font-family: "Inter", serif;
+      color: #fff;
+    }
+    .btn {
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      width: 5.8125rem;
+      height: 2.75rem;
+      justify-content: center;
+      align-items: center;
+      gap: 0.625rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.297);
+      background: rgba(98, 42, 154, 0.887);
+      box-shadow: 0px 0px 6px 3px rgba(255, 255, 255, 0.406) inset;
+      backdrop-filter: blur(14px);
+      z-index: 100;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, opacity 0.3s ease; /* Added transition */
+    }
+
+    .glass:hover {
+      transform: scale(1.05); /* Scale up on hover */
+      opacity: 0.8; /* Slightly change opacity on hover */
+    }
+
+    .w-glass {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .h-txt {
+      background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Animation for the dropdown menu */
+    #mobile-menu {
+      transition: all 0.3s ease-in-out;
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+
+    #mobile-menu.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Hamburger to Cross Animation */
+    .menu-icon {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .menu-icon span {
+      display: block;
+      height: 2px;
+      background-color: #fff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .menu-icon span:nth-child(1) {
+      width: 100%;
+    }
+
+    .menu-icon span:nth-child(2) {
+      width: 70%;
+      align-self: flex-end;
+    }
+
+    .menu-icon span:nth-child(3) {
+      width: 100%;
+    }
+
+    .menu-icon.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+      width: 100%;
+    }
+
+    .menu-icon.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-icon.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+      width: 100%;
+    }
+
+    .trusted-companies {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 390px;
+    }
+
+    .trusted-companies__text {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .trusted-companies__container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .trusted-companies__card {
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.249);
+      border-radius: 0.75rem;
+      width: calc(100% / 4 - 1rem);
+      margin: 0.5rem;
+    }
+
+    .trusted-companies__img {
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    /* Large screens */
+    @media (min-width: 1024px) {
+      .trusted-companies__card {
+        width: calc(25% - 5rem);
+      }
+    }
+
+    /* Medium screens (iPad or similar) */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .trusted-companies__card {
+        width: calc(25% - 1rem);
+      }
+
+      .trusted-companies__container {
+        padding: 25px;
+      }
+
+      .mn {
+        width: 48.625rem;
+        padding: 20px;
+      }
+      .ig-2 {
+        object-position: left;
+      }
+      .ig-3 {
+        object-position: left;
+      }
+    }
+
+    /* Small screens (mobile) */
+    @media (max-width: 767px) {
+      .trusted-companies__card {
+        width: calc(50% - 1rem);
+      }
+      .trusted-companies__text {
+        font-size: 0.8rem;
+      }
+      .trusted-companies__container {
+        padding: 15px;
+      }
+
+      .mn {
+        width: 24rem;
+        padding: 20px;
+      }
+      .ig-2 {
+        object-position: left;
+      }
+      .ig-3 {
+        object-position: left;
+      }
+    }
+
+    /* CUSTOM SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgb(3, 1, 5);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: radial-gradient(circle, rgb(44, 26, 65), rgb(13, 11, 15));
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    .logo-glow {
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    }
+  </style>
+
+  <body>
+    <div class="main">
+      <!-- Navbar -->
+      <nav
+        class="flex justify-between items-center mx-auto p-3.5 w-full max-w-[1200px] border-b border-white border-opacity-10"
+      >
+        <!-- Logo -->
+        <div class="logo-glow">
+          <img  style="transform: rotate(270deg);" class="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="Logo" />
+        </div>
+
+        <!-- Desktop Navigation Links -->
+        <div
+          class="hidden md:flex space-x-6 px-6 py-3 h-[48px] rounded-[60px] border border-white border-opacity-10 glass"
+        >
+          <a href="#home" class="text-base font-bold hover:opacity-90">Home</a>
+          <a href="#work" class="text-base font-bold hover:opacity-90"
+            >How It Works</a
+          >
+          <a href="#features" class="text-base font-bold hover:opacity-90"
+            >Features</a
+          >
+          <a href="#preview" class="text-base font-bold hover:opacity-90"
+            >Preview</a
+          >
+        </div>
+
+        <!-- Desktop Sign-in Button -->
+        <div class="relative hidden md:block" id="profileSection">
+          <!-- Sign in button (shown when not logged in) -->
+          <button class="btn" onclick="window.location.href='http://127.0.0.1:8000/auth/login/'" id="signInBtn">Sign-in</button>
+          
+          <!-- Profile section (shown when logged in) -->
+          <div class="hidden" id="profileDropdown">
+            <button class="flex items-center space-x-2 cursor-pointer" onclick="toggleProfileMenu()">
+              <img src="https://ui-avatars.com/api/?name=User&background=622a9a&color=fff" 
+                   alt="Profile" 
+                   class="w-10 h-10 rounded-full border-2 border-[#9855FF]">
+              <i class="fas fa-chevron-down text-white"></i>
+            </button>
+            
+            <!-- Dropdown menu -->
+            <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="profileMenu">
+              <div class="py-1" role="menu" aria-orientation="vertical">
+                <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                  <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                </a>
+                <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                  <i class="fas fa-cog mr-2"></i>Settings
+                </a>
+                <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                  <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hamburger Icon -->
+        <div
+          id="menu-toggle"
+          class="menu-icon md:hidden z-[60]"
+          onclick="toggleMenu()"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+
+      <!-- Mobile Dropdown Menu -->
+      <m-nav
+        id="mobile-menu"
+        class="hidden flex-col space-y-3 items-center px-6 py-4 text-center md:hidden glass absolute top-0 left-0 w-full rounded-b-3xl"
+      >
+        <a
+          href="#home"
+          class="flex justify-center items-center text-base font-bold hover:opacity-90 mt-16"
+          >Home</a
+        >
+        <a
+          href="#work"
+          class="flex justify-center items-center text-base font-bold hover:opacity-90"
+          >How It Works</a
+        >
+        <a
+          href="#features"
+          class="flex justify-center items-center text-base font-bold hover:opacity-90"
+          >Features</a
+        >
+        <a
+          href="#preview"
+          class="flex justify-center items-center text-base font-bold hover:opacity-90"
+          >Review</a
+        >
+
+        <div class="flex justify-center items-center z-[100]">
+          <button class="btn mt-4">Sign-in</button>
+        </div>
+      </m-nav>
+
+      <!-- Badge -->
+      <section class="">
+        <div
+          class="flex justify-center items-center font-medium leading-8 text-center top-[145px] max-md:max-w-full"
+        >
+          <div class="flex mt-20 sm:mt-32">
+            <div
+              class="flex justify-center items-center h-[2rem] sm:p-2 p-[0.4rem] text-[0.7rem] sm:text-[0.9rem] sm:h-[2.225rem] rounded-[60px] border border-[#9855FF] bg-black leading-loose font-normal"
+            >
+              <span
+                class="text-black font-bold bg-[#9855FF] flex justify-center items-center h-4 p-1 sm:py-2 sm:px-1 text-[0.6rem] sm:text-[0.8rem] sm:h-5 rounded-[60px] border border-white border-opacity-10 mr-1 sm:mr-2"
+                >NEW</span
+              >
+              Latest integration just arrived
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <h1
+            class="text-[1.5rem] leading-[2.5rem] md:text-[2.5rem] md:leading-[3.5rem] lg:text-[5.5rem] lg:leading-[6.5rem] font-medium tracking-wider"
+            style="letter-spacing: 0.04em"
+          >
+            <span class="h-txt flex justify-center items-center"
+              >Revolutionizing Technical</span
+            >
+            <span class="h-txt flex justify-center items-center -mt-4">
+              Hiring with AI</span
+            >
+          </h1>
+          <p
+            class="flex justify-center items-center -mt-2 text-[0.9rem] sm:text-[1rem] font-normal sm:leading-8"
+            style="letter-spacing: -0.00013rem"
+          >
+            <span class="text-center w-[20rem] sm:w-[60rem] mt-2">
+              Hirex helps companies find the perfect technical talent through
+              AI-powered interviews that are fair, efficient, and insightful.
+              Save time and hire better.
+            </span>
+          </p>
+        </div>
+
+        <div class="mt-4 flex justify-center item-center">
+          <div
+            class="w-[8.5625rem] h-[3.5625rem] border boredr-white rounded-lg flex justify-center item-center p-2"
+          >
+            <button
+              type="submit"
+              class="bg-white text-center text-black text-[0.9375rem] font-semibold w-full rounded-lg"
+            >
+              <a href="/auth/login"><span>Join Now</span></a>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Image -->
+      <!-- <section class="flex justify-center items-center flex-grow mt-16 p-6">
+        <div class="relative">
+          <img
+            src="./dash.png"
+            class="rounded-lg w-[1200px]"
+            alt="img-hero"
+            style="box-shadow: 0 -15px 25px 10px rgba(126, 38, 163, 0.9)"
+          />
+        </div>
+      </section> -->
+
+      <!-- How It Works -->
+      <section id="work" class="py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+              Evalio streamlines your technical hiring process in three simple
+              steps, saving you time and ensuring you find the right candidates.
+            </p>
+          </div>
+
+          <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8">
+              <!-- Step 1 -->
+              <div class="relative">
+                <div
+                  class="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center"
+                >
+                  <span class="text-indigo-600 font-bold">1</span>
+                </div>
+                <div
+                  class="hidden md:block absolute top-10 left-full w-full h-0.5 bg-gray-400 -translate-x-8 z-0"
+                ></div>
+                <div
+                  class="w-glass relative z-10 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
+                >
+                  <div
+                    class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 rounded-lg"
+                  >
+                    <i
+                      class="fa-solid fa-user-plus text-2xl"
+                      style="color: rgba(98, 42, 154, 0.887)"
+                    ></i>
+                  </div>
+                  <h3 class="text-xl font-semibold mb-3">
+                    Upload Candidate List
+                  </h3>
+                  <p class="text-gray-300 flex-grow">
+                    Import candidates from your ATS or add them manually. Set
+                    job requirements and skills to evaluate.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="relative">
+                <div
+                  class="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center"
+                >
+                  <span class="text-indigo-600 font-bold">2</span>
+                </div>
+                <div
+                  class="hidden md:block absolute top-10 left-full w-full h-0.5 bg-gray-400 -translate-x-8 z-0"
+                ></div>
+                <div
+                  class="w-glass relative z-10 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
+                >
+                  <div
+                    class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 rounded-lg"
+                  >
+                    <i
+                      class="fa-solid fa-calendar-alt text-2xl"
+                      style="color: rgba(98, 42, 154, 0.887)"
+                    ></i>
+                  </div>
+                  <h3 class="text-xl font-semibold mb-3">
+                    Auto-Schedule & Conduct
+                  </h3>
+                  <p class="text-gray-300 flex-grow">
+                    AI schedules and conducts technical interviews, adapting
+                    questions based on candidate responses.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="relative">
+                <div
+                  class="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center"
+                >
+                  <span class="text-indigo-600 font-bold">3</span>
+                </div>
+                <div
+                  class="w-glass relative z-10 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
+                >
+                  <div
+                    class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 rounded-lg"
+                  >
+                    <i
+                      class="fa-solid fa-file-alt text-3xl"
+                      style="color: rgba(98, 42, 154, 0.887)"
+                    ></i>
+                  </div>
+                  <h3 class="text-xl font-semibold mb-3">Generate Reports</h3>
+                  <p class="text-gray-300 flex-grow">
+                    Receive detailed performance reports with skill assessments,
+                    code quality metrics, and hiring recommendations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Powerful Features -->
+      <section id="features" class="py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+              Powerful Features
+            </h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+              Everything you need to transform your technical hiring process
+              from time-consuming to efficient and insightful.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Feature Card 1 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-calendar-alt text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Smart Scheduling</h3>
+              <p class="text-gray-300">
+                AI automatically schedules interviews based on candidate and
+                interviewer availability.
+              </p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-brain text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">AI Questions</h3>
+              <p class="text-gray-300">
+                Dynamic question generation based on job requirements and
+                candidate responses.
+              </p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-microphone text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Voice Interviews</h3>
+              <p class="text-gray-300">
+                Natural conversation with advanced speech recognition and
+                analysis.
+              </p>
+            </div>
+
+            <!-- Feature Card 4 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-shield-alt text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Secure Access</h3>
+              <p class="text-gray-300">
+                Enterprise-grade security with role-based permissions and audit
+                logs.
+              </p>
+            </div>
+
+            <!-- Feature Card 5 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-clock text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Time Savings</h3>
+              <p class="text-gray-300">
+                Reduce hiring time by 85% while improving candidate quality
+                assessment.
+              </p>
+            </div>
+
+            <!-- Feature Card 6 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-chart-bar text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Detailed Analytics</h3>
+              <p class="text-gray-300">
+                Comprehensive reports with skill assessments and hiring
+                recommendations.
+              </p>
+            </div>
+
+            <!-- Feature Card 7 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-users text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Bias Reduction</h3>
+              <p class="text-gray-300">
+                Standardized evaluation criteria that minimize unconscious bias
+                in hiring.
+              </p>
+            </div>
+
+            <!-- Feature Card 8 -->
+            <div
+              class="glass p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group"
+            >
+              <div
+                class="glass p-3 w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-indigo-100 transition-colors duration-300 rounded-lg"
+              >
+                <i
+                  class="fa-solid fa-magic text-2xl"
+                  style="color: rgba(98, 42, 154, 0.887)"
+                ></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Custom Workflows</h3>
+              <p class="text-gray-300">
+                Tailor the interview process to match your company's specific
+                requirements.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Platform Preview -->
+      <section id="preview" class="py-20 overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+              Platform Preview
+            </h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+              Take a look at Evalio's intuitive interface designed to streamline
+              the entire technical interview process.
+            </p>
+          </div>
+
+          <div class="relative max-w-5xl mx-auto">
+            <!-- Main screenshot -->
+            <div class="relative rounded-xl overflow-hidden shadow-2xl">
+              <img
+                id="screenshot-img"
+                src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="Dashboard Overview"
+                class="w-full h-auto md:h-[500px] object-cover"
+              />
+              <div
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+              >
+                <h3
+                  id="screenshot-title"
+                  class="text-xl font-semibold text-white mb-2"
+                >
+                  Dashboard Overview
+                </h3>
+                <p id="screenshot-description" class="text-white/80">
+                  Monitor all interviews and candidate progress at a glance.
+                </p>
+              </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <button
+              onclick="showPrevious()"
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors z-10"
+            >
+              <svg
+                class="w-6 h-6 text-gray-800"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onclick="showNext()"
+              class="absolute top-1/2 right-4 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors z-10"
+            >
+              <svg
+                class="w-6 h-6 text-gray-800"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            <!-- Thumbnails -->
+            <div class="flex justify-center mt-6 space-x-2" id="thumbnail-dots">
+              <!-- Dots will be injected by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <script>
+        const screenshots = [
+          {
+            title: "Dashboard Overview",
+            description:
+              "Monitor all interviews and candidate progress at a glance.",
+            image:
+              "https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          },
+          {
+            title: "Interview Session",
+            description:
+              "AI-powered interview interface with real-time transcription.",
+            image:
+              "https://images.pexels.com/photos/3182781/pexels-photo-3182781.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          },
+          {
+            title: "Performance Reports",
+            description: "Detailed candidate assessment with skill breakdowns.",
+            image:
+              "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          },
+          {
+            title: "Candidate Management",
+            description:
+              "Organize candidates and track their progress through the pipeline.",
+            image:
+              "https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          },
+        ];
+
+        let currentIndex = 0;
+
+        function updateScreenshot() {
+          const current = screenshots[currentIndex];
+          document.getElementById("screenshot-img").src = current.image;
+          document.getElementById("screenshot-img").alt = current.title;
+          document.getElementById("screenshot-title").textContent =
+            current.title;
+          document.getElementById("screenshot-description").textContent =
+            current.description;
+
+          // Update dots
+          const dots = document.querySelectorAll(".screenshot-dot");
+          dots.forEach((dot, index) => {
+            dot.className = `w-3 h-3 rounded-full transition-colors screenshot-dot ${
+              index === currentIndex
+                ? "bg-[#9e29d0]"
+                : "bg-gray-300 hover:bg-[#9e29d0]"
+            }`;
+          });
+        }
+
+        function showPrevious() {
+          currentIndex =
+            (currentIndex - 1 + screenshots.length) % screenshots.length;
+          updateScreenshot();
+        }
+
+        function showNext() {
+          currentIndex = (currentIndex + 1) % screenshots.length;
+          updateScreenshot();
+        }
+
+        // Generate dots
+        const dotContainer = document.getElementById("thumbnail-dots");
+        screenshots.forEach((_, index) => {
+          const dot = document.createElement("button");
+          dot.className =
+            "w-3 h-3 rounded-full transition-colors screenshot-dot " +
+            (index === 0 ? "bg-[#9e29d0]" : "bg-gray-300 hover:bg-[#9e29d0]");
+          dot.onclick = () => {
+            currentIndex = index;
+            updateScreenshot();
+          };
+          dotContainer.appendChild(dot);
+        });
+      </script>
+    </div>
+
+    <!-- footer -->
+    <footer class="text-white -mt-4 pb-8">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Bottom Info -->
+        <div
+          class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-500 text-sm mb-4 md:mb-0">
+            &copy; 2025 Evalio Inc. All rights reserved.
+          </p>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-500 hover:text-gray-300 text-sm"
+              >Terms</a
+            >
+            <a href="#" class="text-gray-500 hover:text-gray-300 text-sm"
+              >Privacy</a
+            >
+            <a href="#" class="text-gray-500 hover:text-gray-300 text-sm"
+              >Cookies</a
+            >
+            <a href="#" class="text-gray-500 hover:text-gray-300 text-sm"
+              >Security</a
+            >
+          </div>
+        </div>
+
+        <!-- Made with love -->
+        <div class="mt-8 text-center">
+          <p class="text-gray-500 text-xs flex items-center justify-center">
+            Made with <span class="text-red-500 mx-1">❤️</span> by the Evalio
+            Team
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Toggle Mobile Menu and Animation
+      function toggleMenu() {
+        const menuIcon = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        // Toggle menu visibility
+        mobileMenu.classList.toggle("hidden");
+        mobileMenu.classList.toggle("active");
+
+        // Toggle icon animation
+        menuIcon.classList.toggle("open");
+      }
+
+      // Profile dropdown functionality
+      function toggleProfileMenu() {
+        const menu = document.getElementById('profileMenu');
+        menu.classList.toggle('hidden');
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const profileSection = document.getElementById('profileSection');
+        const profileMenu = document.getElementById('profileMenu');
+        
+        if (!profileSection.contains(event.target)) {
+          profileMenu.classList.add('hidden');
+        }
+      });
+
+      // Check login status and update UI
+      function checkLoginStatus() {
+        // This is a placeholder - replace with your actual login check logic
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        
+        const signInBtn = document.getElementById('signInBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        
+        if (isLoggedIn) {
+          signInBtn.classList.add('hidden');
+          profileDropdown.classList.remove('hidden');
+        } else {
+          signInBtn.classList.remove('hidden');
+          profileDropdown.classList.add('hidden');
+        }
+      }
+
+      // Logout function
+      function logout() {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/evalio';
+      }
+
+      // Check login status when page loads
+      document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+  </body>
+</html>

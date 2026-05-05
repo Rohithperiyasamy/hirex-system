@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + JS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!--  mic Icons -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      video {
+        object-fit: cover;
+      }
+      body {
+        font-family: "Inter", serif;
+      }
+
+      @layer utilities {
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          /* IE and Edge */
+          scrollbar-width: none;
+          /* Firefox */
+        }
+      }
+      .text-container {
+        z-index: 100;
+        width: 100vw;
+        /* height: 100vh; */
+        /* display: flex; */
+        position: absolute;
+        top: 0;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        /* font-size: 96px; */
+        color: white;
+        opacity: 0.8;
+        user-select: none;
+        text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+      }
+      :root {
+        --color-bg1: rgb(108, 0, 162);
+        --color-bg2: rgb(0, 17, 82);
+        --color1: 18, 113, 255;
+        --color2: 221, 74, 255;
+        --color3: 100, 220, 255;
+        --color4: 200, 50, 50;
+        --color5: 180, 180, 50;
+        --color-interactive: 140, 100, 255;
+        --circle-size: 80%;
+        --blending: hard-light;
+      }
+      @keyframes moveInCircle {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes moveVertical {
+        0% {
+          transform: translateY(-50%);
+        }
+        50% {
+          transform: translateY(50%);
+        }
+        100% {
+          transform: translateY(-50%);
+        }
+      }
+      @keyframes moveHorizontal {
+        0% {
+          transform: translateX(-50%) translateY(-10%);
+        }
+        50% {
+          transform: translateX(50%) translateY(10%);
+        }
+        100% {
+          transform: translateX(-50%) translateY(-10%);
+        }
+      }
+      .gradient-bg {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+        top: 0;
+        left: 0;
+      }
+      svg {
+        display: none;
+      }
+      .gradients-container {
+        filter: url(#goo) blur(40px);
+        width: 100%;
+        height: 100%;
+      }
+      .g1 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color1), 0.8) 0,
+            rgba(var(--color1), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: center center;
+        animation: moveVertical 30s ease infinite;
+        opacity: 1;
+      }
+      .g2 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color2), 0.8) 0,
+            rgba(var(--color2), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: calc(50% - 400px);
+        animation: moveInCircle 20s reverse infinite;
+        opacity: 1;
+      }
+      .g3 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color3), 0.8) 0,
+            rgba(var(--color3), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2 + 200px);
+        left: calc(50% - var(--circle-size) / 2 - 500px);
+        transform-origin: calc(50% + 400px);
+        animation: moveInCircle 40s linear infinite;
+        opacity: 1;
+      }
+      .g4 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color4), 0.8) 0,
+            rgba(var(--color4), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: calc(50% - 200px);
+        animation: moveHorizontal 40s ease infinite;
+        opacity: 0.7;
+      }
+      .g5 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color5), 0.8) 0,
+            rgba(var(--color5), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: calc(var(--circle-size) * 2);
+        height: calc(var(--circle-size) * 2);
+        top: calc(50% - var(--circle-size));
+        left: calc(50% - var(--circle-size));
+        transform-origin: calc(50% - 800px) calc(50% + 200px);
+        animation: moveInCircle 20s ease infinite;
+        opacity: 1;
+      }
+      .interactive {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color-interactive), 0.8) 0,
+            rgba(var(--color-interactive), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: 100%;
+        height: 100%;
+        top: -50%;
+        left: -50%;
+        opacity: 0.7;
+      }
+
+      /* Modal/Popup Styles */
+      .interview-end-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .modal-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        animation: slideIn 0.4s ease-out;
+      }
+
+      .modal-content::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(
+            45deg,
+            #ff6b6b,
+            #4ecdc4,
+            #45b7d1,
+            #96ceb4,
+            #feca57
+          );
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease-in-out infinite;
+      }
+
+      .modal-icon {
+        font-size: 4rem;
+        color: #ffffff;
+        margin-bottom: 20px;
+        animation: bounce 1s ease-in-out infinite alternate;
+      }
+
+      .modal-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-message {
+        font-size: 1.1rem;
+        color: #f0f0f0;
+        margin-bottom: 25px;
+        line-height: 1.6;
+      }
+
+      .countdown-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        border: 3px solid #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ffffff;
+        animation: pulse 1s ease-in-out infinite;
+      }
+
+      @keyframes moveInCircle {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes moveVertical {
+        0% {
+          transform: translateY(-50%);
+        }
+        50% {
+          transform: translateY(50%);
+        }
+        100% {
+          transform: translateY(-50%);
+        }
+      }
+      @keyframes moveHorizontal {
+        0% {
+          transform: translateX(-50%) translateY(-10%);
+        }
+        50% {
+          transform: translateX(50%) translateY(10%);
+        }
+        100% {
+          transform: translateX(-50%) translateY(-10%);
+        }
+      }
+      .gradient-bg {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+        top: 0;
+        left: 0;
+      }
+      svg {
+        display: none;
+      }
+      .gradients-container {
+        filter: url(#goo) blur(40px);
+        width: 100%;
+        height: 100%;
+      }
+      .g1 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color1), 0.8) 0,
+            rgba(var(--color1), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: center center;
+        animation: moveVertical 30s ease infinite;
+        opacity: 1;
+      }
+      .g2 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color2), 0.8) 0,
+            rgba(var(--color2), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: calc(50% - 400px);
+        animation: moveInCircle 20s reverse infinite;
+        opacity: 1;
+      }
+      .g3 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color3), 0.8) 0,
+            rgba(var(--color3), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2 + 200px);
+        left: calc(50% - var(--circle-size) / 2 - 500px);
+        transform-origin: calc(50% + 400px);
+        animation: moveInCircle 40s linear infinite;
+        opacity: 1;
+      }
+      .g4 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color4), 0.8) 0,
+            rgba(var(--color4), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: calc(50% - 200px);
+        animation: moveHorizontal 40s ease infinite;
+        opacity: 0.7;
+      }
+      .g5 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color5), 0.8) 0,
+            rgba(var(--color5), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: calc(var(--circle-size) * 2);
+        height: calc(var(--circle-size) * 2);
+        top: calc(50% - var(--circle-size));
+        left: calc(50% - var(--circle-size));
+        transform-origin: calc(50% - 800px) calc(50% + 200px);
+        animation: moveInCircle 20s ease infinite;
+        opacity: 1;
+      }
+      .interactive {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color-interactive), 0.8) 0,
+            rgba(var(--color-interactive), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: 100%;
+        height: 100%;
+        top: -50%;
+        left: -50%;
+        opacity: 0.7;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-50px) scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes bounce {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes borderAnimation {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #ffffff;
+        border-radius: 50%;
+        animation: sparkle 2s ease-in-out infinite;
+      }
+
+      .sparkle:nth-child(1) {
+        top: 20%;
+        left: 20%;
+        animation-delay: 0s;
+      }
+      .sparkle:nth-child(2) {
+        top: 20%;
+        right: 20%;
+        animation-delay: 0.5s;
+      }
+      .sparkle:nth-child(3) {
+        bottom: 20%;
+        left: 30%;
+        animation-delay: 1s;
+      }
+      .sparkle:nth-child(4) {
+        bottom: 20%;
+        right: 30%;
+        animation-delay: 1.5s;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text-container bg-transparent min-h-screen flex flex-col">
+      <!-- Main Container -->
+      <div
+        class="flex-1 container mx-auto pt-4 flex flex-col space-y-4 text-sm md:text-base"
+      >
+        <!-- Text Section -->
+        <div
+          class="messages no-scrollbar flex-1 overflow-y-auto p-4 max-h-[26rem] md:max-h-[27rem]"
+          id="messagesContainer"
+        ></div>
+      </div>
+
+      <!-- Camera Section (Responsive) -->
+      <div class="relative w-full h-32 flex items-center justify-between">
+        <!-- Image -->
+        <div
+          class="absolute right-20 w-28 h-28 flex items-center justify-center rounded-full shadow-md hidden sm:block"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://github.com/user-attachments/assets/1a1cb9c2-c282-40b3-9957-5c26dcd63513');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 5px solid rgb(197, 211, 255);
+            font-size: 30px;
+            font-weight: bolder;
+          "
+        ></div>
+
+        <!-- Video -->
+        <video
+          id="videoElement"
+          class="absolute left-20 w-[200px] h-full rounded-lg shadow-md border-2 border-white"
+          autoplay
+        ></video>
+      </div>
+
+      <!-- Footer Section (Always at the bottom) -->
+      <div
+        class="footer bg-white/20 backdrop-blur-lg border border-white/30 shadow-2xl rounded-xl text-white py-4 w-[95%] md:w-[90%] flex justify-between items-center px-6 md:px-14 mt-4 mx-auto mb-8"
+        style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2)"
+      >
+        <div class="info">
+          <span class="text-sm md:text-lg font-bold">Evalio</span>
+        </div>
+
+        <!-- Middle Mic Icon -->
+        <div class="mic-icon flex flex-col items-center justify-center cursor-pointer" onclick="speechrecog()">
+  <i id="micIcon" class="fa-solid fa-microphone-slash text-red-600 text-2xl"></i>
+  <span id="micText" class="text-xs text-white mt-1">Click to speak</span>
+</div>
+
+        <a href="/interview/feedback/"
+          ><button
+            class="leave-btn bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded text-xs md:text-base"
+          >
+            Leave interview
+          </button></a>
+<script>
+  const email = "{{ interview.email|escapejs }}";  // for evaluation
+  const token = "{{ interview.token|escapejs }}";
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const leaveLink = document.getElementById('leave-link');
+
+    if (leaveLink) {
+      leaveLink.addEventListener('click', function (event) {
+        event.preventDefault();  // Prevent immediate navigation
+
+        fetch('/tool/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({ email: email,
+                                 token: token
+           })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Tool triggered:", data);
+          window.location.href = leaveLink.href;  // Now go to /interview/feedback/
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+      });
+    }
+  });
+</script>
+
+
+
+
+
+
+
+      </div>
+    </div>
+    <div class="gradient-bg">
+      <svg xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur
+              in="SourceGraphic"
+              stdDeviation="10"
+              result="blur"
+            />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
+      </svg>
+      <div class="gradients-container">
+        <div class="g1"></div>
+        <div class="g2"></div>
+        <div class="g3"></div>
+        <div class="g4"></div>
+        <div class="g5"></div>
+        <div class="interactive"></div>
+      </div>
+    </div>
+   <input type="hidden" id="interviewEmail" value="{{ interviewee_email }}">
+   <input type="hidden" id="interviewToken" value="{{ interviewee_token }}">
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const interBubble = document.querySelector(".interactive");
+        let curX = 0;
+        let curY = 0;
+        let tgX = 0;
+        let tgY = 0;
+
+        function move() {
+          curX += (tgX - curX) / 20;
+          curY += (tgY - curY) / 20;
+          interBubble.style.transform = `translate(${Math.round(
+            curX
+          )}px, ${Math.round(curY)}px)`;
+          requestAnimationFrame(move);
+        }
+
+        window.addEventListener("mousemove", (event) => {
+          tgX = event.clientX;
+          tgY = event.clientY;
+        });
+
+        move();
+      });
+    </script>
+    <!-- <script>
+      // Camera access code
+      const videoElement = document.getElementById("videoElement");
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then(function (stream) {
+            videoElement.srcObject = stream;
+          })
+          .catch(function (error) {
+            console.log("Something went wrong accessing the camera!");
+          });
+      }
+    </script> -->
+    <!-- *********************Latest proctoring code************************ -->
+      <!-- Hidden canvas for capturing frames -->
+      <canvas id="canvas" style="display: none;"></canvas>
+
+      <!-- JS to access webcam and send images -->
+      <script>
+        const video = document.getElementById("videoElement");
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        const AuthToken = "{{ interview.token|escapejs }}";
+       
+  
+        // Ask for camera access
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((stream) => {
+            video.srcObject = stream;
+          })
+          .catch((err) => {
+            console.error("Error accessing camera:", err);
+          });
+  
+        // Capture image every 3 seconds and send to server
+        setInterval(() => {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+          const imageData = canvas.toDataURL("image/jpeg");
+          
+  
+          fetch("/proctoring/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${AuthToken}`
+            },
+            body: JSON.stringify({ image: imageData,
+                                   token: AuthToken,
+             }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Proctoring response:", data);
+              console.log("token:", AuthToken);
+            })
+            .catch((error) => {
+              console.error("Error sending image to server:", error);
+            });
+        }, 3000);
+      </script>
+     <!-- ************************************************************ -->
+    <script>
+      /*---------------------SPEECH RECOG.--------------------------*/
+      /*************************************************/
+      // Function to get CSRF token from cookies
+     /*---------------------SPEECH RECOG.--------------------------*/
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+let lastAiResponse = "";
+let isMicBusy = false;  // prevent double clicks while AI is thinking/speaking
+
+function setMicState(state) {
+  const micIcon = document.getElementById("micIcon");
+  const micText = document.getElementById("micText");
+
+  // Reset all classes first
+  micIcon.className = "";
+
+  if (state === "listening") {
+    micIcon.classList.add("bx", "bx-dots-horizontal-rounded", "bx-flashing", "text-blue-600", "text-4xl");
+    micText.textContent = "Listening...";
+  } else if (state === "processing") {
+    micIcon.classList.add("fa-solid", "fa-spinner", "fa-spin", "text-yellow-500", "text-2xl");
+    micText.textContent = "AI thinking...";
+  } else if (state === "speaking") {
+    micIcon.classList.add("fa-solid", "fa-volume-high", "text-green-500", "text-2xl");
+    micText.textContent = "AI speaking...";
+  } else {
+    // idle / ready
+    micIcon.classList.add("fa-solid", "fa-microphone", "text-white", "text-2xl");
+    micText.textContent = "Click to speak";
+    isMicBusy = false;
+  }
+}
+
+function speak(aiSpeech) {
+  window.speechSynthesis.cancel(); // cancel any ongoing speech first
+  const utterance = new SpeechSynthesisUtterance(aiSpeech);
+  utterance.lang = "en-US";
+  utterance.pitch = 1.2;
+  utterance.rate = 1;
+  setMicState("speaking");
+  utterance.onend = () => {
+    setMicState("idle");
+  };
+  window.speechSynthesis.speak(utterance);
+}
+
+function speechrecog() {
+  if (isMicBusy) return;  // ignore clicks while busy
+  isMicBusy = true;
+
+  let recognization = new webkitSpeechRecognition();
+  recognization.lang = "en-US";
+  recognization.interimResults = false;
+  recognization.maxAlternatives = 1;
+
+  recognization.onstart = () => {
+    setMicState("listening");
+  };
+
+  recognization.onresult = (e) => {
+  console.log("onresult fired");          // ← add
+  console.log("isMicBusy:", isMicBusy);   // ← add
+  var transcript = e.results[0][0].transcript;
+
+    const csrftoken = getCookie("csrftoken");
+    const email = document.getElementById("interviewEmail").value;
+    const token = document.getElementById("interviewToken").value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/tool/", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        console.log("response: ", JSON.stringify(response, null, 2));
+
+        const messagesContainer = document.getElementById("messagesContainer");
+        messagesContainer.innerHTML = "";
+
+        response.transcripts.forEach((item) => {
+          const userMessage = document.createElement("div");
+          userMessage.classList.add("bg-gray-100", "p-4", "rounded-lg", "shadow-md", "mb-2", "w-fit", "font-semibold");
+          userMessage.innerHTML = `<p class="text-left text-gray-700">You: ${item.transcript}</p>`;
+          messagesContainer.appendChild(userMessage);
+
+          const aiMessage = document.createElement("div");
+          aiMessage.classList.add("bg-blue-100", "p-4", "rounded-lg", "shadow-md", "mb-2", "w-fit", "ml-auto");
+          aiMessage.innerHTML = `<p class="text-left text-gray-700">AI: ${item.response}</p>`;
+          messagesContainer.appendChild(aiMessage);
+          lastAiResponse = item.response;
+        });
+
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        if (response.should_end_interview) {
+          speak(lastAiResponse);
+          setTimeout(() => { showInterviewEndModal(); }, 1500);
+          return;
+        }
+
+        speak(lastAiResponse);
+
+      } else {
+        console.log("Error: " + xhr.statusText);
+        setMicState("idle");
+      }
+    };
+
+    xhr.onerror = function() {
+      console.log("Network error");
+      setMicState("idle");
+    };
+
+    xhr.send(JSON.stringify({ email: email, token: token, transcript: transcript }));
+  };
+
+  recognization.onerror = (e) => {
+    console.log("Speech error: " + e.error);
+    setMicState("idle");
+  };
+
+  recognization.onend = function () {
+    // Only reset to idle if we didn't get a result (user said nothing)
+    if (isMicBusy && document.getElementById("micText").textContent === "Listening...") {
+      setMicState("idle");
+    }
+  };
+
+  recognization.start();
+}
+      // Function to show the interview end modal
+      function showInterviewEndModal() {
+        const modal = document.getElementById('interviewEndModal');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const countdownText = document.getElementById('countdownText');
+        
+        modal.style.display = 'flex';
+        
+        let countdown = 3;
+        const countdownInterval = setInterval(() => {
+          countdown--;
+          countdownNumber.textContent = countdown;
+          countdownText.textContent = countdown;
+          
+          if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            window.location.href = '/interview/feedback/';
+          }
+        }, 1000);
+      }
+    </script>
+
+    <!-- Add this HTML right after the opening <body> tag -->
+<div id="interviewEndModal" class="interview-end-modal">
+  <div class="modal-content">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    
+    <div class="modal-icon">
+      <i class="fas fa-graduation-cap"></i>
+    </div>
+    
+    <h2 class="modal-title">Interview Complete!</h2>
+    
+    <p class="modal-message">
+      Congratulations! You've successfully completed your interview. 
+      <br><br>
+      <strong>Best of luck with your results!</strong>
+    </p>
+    
+    <div class="countdown-circle">
+      <span id="countdownNumber">3</span>
+    </div>
+    
+    <p style="color: #f0f0f0; margin-top: 15px; font-size: 0.9rem;">
+      Redirecting to feedback page in <span id="countdownText">3</span> seconds...
+    </p>
+  </div>
+</div>
+  </body>
+</html>
+
+
+

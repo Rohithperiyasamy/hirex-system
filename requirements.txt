@@ -1,0 +1,38 @@
+# Hirex — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Django
+Django==5.1
+asgiref==3.8.1
+sqlparse==0.5.1
+
+# Environment config
+python-dotenv==1.0.1
+
+# AI — Ollama (local LLaMA)
+ollama==0.4.8
+
+# AI — Google Gemini
+google-generativeai==0.8.3
+google-ai-generativelanguage==0.6.10
+google-api-core==2.22.0
+google-api-python-client==2.151.0
+google-auth==2.36.0
+
+# PDF handling (resume parsing + report generation)
+PyMuPDF==1.25.0
+
+# Computer Vision (webcam proctoring)
+opencv-python==4.11.0.86
+numpy==2.2.0
+
+# Excel upload support
+openpyxl==3.1.5
+pandas==2.2.3
+
+# HTTP requests (resume download)
+requests==2.32.3
+
+# Utilities
+python-dateutil==2.9.0.post0
+pytz==2024.2

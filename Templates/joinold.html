@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Interview - Evalio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+            color: #fff;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .glass:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn {
+            font-weight: 600;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0px 0px 6px 3px rgba(255, 255, 255, 0.1) inset;
+            backdrop-filter: blur(14px);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .txt-custom {
+            color: #9e29d0;
+        }
+
+        .h-txt {
+            background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .video-container {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .dialog-glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        @media (max-width: 767px) {
+            .h-txt {
+                font-size: 20px;
+            }
+            .btn {
+                font-size: 14px;
+            }
+            .status-indicator {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse-loading {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div id="mainContainer" class="max-w-7xl w-full opacity-0 animate-fade-in">
+        <div class="p-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold h-txt mb-2">Interview Ready</h1>
+                <p class="text-gray-300 text-lg">Prepare yourself and join when ready</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Video Section -->
+                <div class="w-full lg:w-2/3">
+                    <div class="video-container lg:h-[400px] lg:w-[640px] mx-auto">
+                        <video id="videoElement" class="w-full h-full object-cover" autoplay playsinline></video>
+                        <div id="videoOverlay" class="video-overlay opacity-0">
+                            <div class="text-center">
+                                <i class="fas fa-spinner fa-spin text-white text-6xl pulse-loading"></i>
+                                <p class="text-white mt-4 text-lg">Initializing camera...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info and Controls Section -->
+                <div class="w-full lg:w-1/3 flex flex-col gap-6">
+                    <!-- Status Indicators -->
+                    <div class="glass rounded-xl p-6">
+                        <h3 class="text-xl font-semibold mb-4 txt-custom">System Status</h3>
+                        <div class="space-y-3">
+                            <div id="cameraStatus" class="status-indicator">
+                                <i class="fas fa-video text-gray-400"></i>
+                                <span>Checking camera...</span>
+                            </div>
+                            <div id="micStatus" class="status-indicator">
+                                <i class="fas fa-microphone text-gray-400"></i>
+                                <span>Checking microphone...</span>
+                            </div>
+                            <div id="internetStatus" class="status-indicator">
+                                <i class="fas fa-wifi text-gray-400"></i>
+                                <span>Checking connection...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Information -->
+                    <div id="userInfo" class="glass rounded-xl p-6 space-y-4">
+                        <h3 class="text-xl font-semibold txt-custom">Interview Details</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-user txt-custom w-5"></i>
+                                <div>
+                                    <p class="text-sm text-gray-300">Candidate</p>
+                                    <p id="userName" class="text-lg font-semibold">{{interviewDetail.name}}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-briefcase txt-custom w-5"></i>
+                                <div>
+                                    <p class="text-sm text-gray-300">Position</p>
+                                    <p id="userJobRole" class="text-lg font-semibold">{{interviewDetail.jobRole}}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-calendar txt-custom w-5"></i>
+                                <div>
+                                    <p class="text-sm text-gray-300">Date</p>
+                                    <p id="currentDate" class="text-lg font-semibold">{{interviewDetail.interviewDate}}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-clock txt-custom w-5"></i>
+                                <div>
+                                    <p class="text-sm text-gray-300">Time</p>
+                                    <p id="meetingTime" class="text-lg font-semibold">{{interviewDetail.interviewTime}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="interviewToken" value="{{ interviewDetail.token }}">
+                    </div>
+
+                    <!-- Join Button -->
+                    <button id="joinButton" disabled
+                        class="btn py-4 px-8 text-xl font-bold rounded-xl space-x-3">
+                        <i class="fas fa-phone"></i>
+                        <span>Join Interview</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Dialog -->
+    <div id="dialogBox" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="dialog-glass w-[90%] max-w-4xl h-[90%] max-h-[600px] rounded-2xl shadow-2xl p-6 relative">
+            <!-- Close Button -->
+            <button id="closeDialogButton" class="absolute top-4 right-6 txt-custom hover:text-purple-200 transition-colors">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+
+            <div class="h-full flex flex-col">
+                <h2 class="text-3xl font-bold h-txt mb-6">Terms and Conditions</h2>
+                
+                <div class="flex-1 overflow-y-auto border border-white border-opacity-20 rounded-lg p-4 mb-6 bg-black bg-opacity-20">
+                    <div class="space-y-4 text-gray-200 leading-relaxed">
+                        <p>
+                            <strong class="txt-custom">1. Interview Conduct and Guidelines</strong><br>
+                            By participating in this video interview, you agree to conduct yourself professionally and respectfully. Please ensure you are in a quiet, well-lit environment with a stable internet connection. Dress code should be business appropriate. Any disruptive behavior, inappropriate language, or violation of professional standards may result in immediate termination of the interview process.
+                        </p>
+                        <p>
+                            <strong class="txt-custom">2. Technical Requirements and Data Collection</strong><br>
+                            This platform requires access to your camera and microphone to conduct the interview. Your video and audio will be recorded for evaluation purposes and may be reviewed by multiple team members. We collect technical data such as connection quality, device information, and usage analytics to improve our service. All data is handled in accordance with our Privacy Policy and applicable data protection regulations.
+                        </p>
+                        <p>
+                            <strong class="txt-custom">3. Privacy and Confidentiality</strong><br>
+                            All information shared during this interview, including questions, discussions, and any proprietary company information, is strictly confidential. You agree not to record, screenshot, or share any content from this interview session. Similarly, any personal information you provide will be used solely for recruitment purposes and will be protected according to our data retention policies.
+                        </p>
+                        <p>
+                            <strong class="txt-custom">4. Equal Opportunity and Non-Discrimination</strong><br>
+                            We are committed to providing equal employment opportunities regardless of race, gender, age, religion, sexual orientation, disability, or any other protected characteristic. If you require any accommodations for this interview process, please contact our HR team in advance. By proceeding, you acknowledge that this interview is part of a fair and unbiased selection process designed to evaluate your qualifications for the position.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3 mb-6">
+                    <input type="checkbox" id="acceptTerms" class="w-5 h-5 text-purple-600 rounded focus:ring-purple-500">
+                    <label for="acceptTerms" class="text-gray-200 select-none cursor-pointer">
+                        I agree to the terms and conditions
+                    </label>
+                </div>
+
+                <button id="confirmJoinButton" disabled
+                    class="btn w-full py-4 text-xl font-bold rounded-xl">
+                    <i class="fas fa-phone mr-3"></i>
+                    <span>Join Now</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videoElement = document.getElementById('videoElement');
+        const joinButton = document.getElementById('joinButton');
+        const videoOverlay = document.getElementById('videoOverlay');
+        const cameraStatus = document.getElementById('cameraStatus');
+        const micStatus = document.getElementById('micStatus');
+        const internetStatus = document.getElementById('internetStatus');
+
+        const dialogBox = document.getElementById('dialogBox');
+        const acceptTerms = document.getElementById('acceptTerms');
+        const confirmJoinButton = document.getElementById('confirmJoinButton');
+
+        const interviewTokenInput = document.getElementById('interviewToken');
+        const currentInterviewToken = interviewTokenInput ? interviewTokenInput.value : '';
+        let stream;
+        let cameraEnabled = false;
+        let micEnabled = false;
+        let internetStable = navigator.onLine;
+
+        async function setupMediaStream() {
+            try {
+                videoOverlay.style.opacity = '1';
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                videoElement.srcObject = stream;
+                videoElement.muted = true;
+                cameraEnabled = true;
+                micEnabled = true;
+                updateStatusIndicators();
+                videoOverlay.style.opacity = '0';
+            } catch (error) {
+                console.error('Error accessing media devices:', error);
+                updateStatusIndicators();
+                videoOverlay.innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle text-red-400 text-6xl"></i>
+                        <p class="text-white mt-4 text-lg">Camera access denied</p>
+                        <p class="text-gray-300 text-sm mt-2">Please enable camera and microphone permissions</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateStatusIndicators() {
+            cameraStatus.innerHTML = `
+                <i class="fas fa-video ${cameraEnabled ? 'text-green-400' : 'text-red-400'}"></i>
+                <span class="${cameraEnabled ? 'text-green-300' : 'text-red-300'}">
+                    Camera ${cameraEnabled ? 'Ready' : 'Unavailable'}
+                </span>
+            `;
+            micStatus.innerHTML = `
+                <i class="fas fa-microphone ${micEnabled ? 'text-green-400' : 'text-red-400'}"></i>
+                <span class="${micEnabled ? 'text-green-300' : 'text-red-300'}">
+                    Microphone ${micEnabled ? 'Ready' : 'Unavailable'}
+                </span>
+            `;
+            internetStatus.innerHTML = `
+                <i class="fas fa-wifi ${internetStable ? 'text-green-400' : 'text-red-400'}"></i>
+                <span class="${internetStable ? 'text-green-300' : 'text-red-300'}">
+                    Internet ${internetStable ? 'Connected' : 'Disconnected'}
+                </span>
+            `;
+            updateJoinButton();
+        }
+
+        function updateJoinButton() {
+            const allConditionsMet = cameraEnabled && micEnabled && internetStable;
+            joinButton.disabled = !allConditionsMet;
+        }
+
+        function showDialogBox() {
+            dialogBox.classList.remove('hidden');
+        }
+
+        function handleCheckboxChange() {
+            confirmJoinButton.disabled = !acceptTerms.checked;
+        }
+        
+        function redirectToNextPage() {
+            if (acceptTerms.checked) {
+                window.location.href = '../interview/';
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('closeDialogButton').addEventListener('click', () => {
+            dialogBox.classList.add('hidden');
+        });
+
+        joinButton.addEventListener('click', showDialogBox);
+        acceptTerms.addEventListener('change', handleCheckboxChange);
+        confirmJoinButton.addEventListener('click', redirectToNextPage);
+
+        // Close dialog when clicking outside
+        dialogBox.addEventListener('click', (e) => {
+            if (e.target === dialogBox) {
+                dialogBox.classList.add('hidden');
+            }
+        });
+
+        window.addEventListener('load', async () => {
+            await setupMediaStream();
+            updateStatusIndicators();
+
+            // Fade in the main container
+            const mainContainer = document.getElementById('mainContainer');
+            setTimeout(() => {
+                mainContainer.style.opacity = '1';
+            }, 100);
+        });
+
+        window.addEventListener('online', () => {
+            internetStable = true;
+            updateStatusIndicators();
+        });
+
+        window.addEventListener('offline', () => {
+            internetStable = false;
+            updateStatusIndicators();
+        });
+    </script>
+</body>
+
+</html>

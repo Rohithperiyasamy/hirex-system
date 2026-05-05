@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Report</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        overflow: auto;
+        font-family: "Inter", serif;
+        color: #fff;
+      }
+
+      .h-txt {
+        background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .btn {
+        font-weight: 600;
+        cursor: pointer;
+        color: #fff;
+        display: flex;
+        width: 10.8125rem;
+        height: 2.875rem;
+        padding: 0.125rem 0.9375rem;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.297);
+        background: rgba(98, 42, 154, 0.887);
+        box-shadow: 0px 0px 6px 3px rgba(255, 255, 255, 0.406) inset;
+        backdrop-filter: blur(14px);
+      }
+
+      .txt-custom {
+        color: #9e29d0;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .glass:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .metric-card {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .metric-card:hover {
+        transform: scale(1.02);
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      @media (max-width: 767px) {
+        .h-txt {
+          font-size: 20px;
+        }
+        .btn {
+          font-size: 10px;
+          width: 9rem;
+        }
+        .d-i {
+          height: 1rem;
+          width: 1rem;
+        }
+        .i-d {
+          font-size: 11px;
+        }
+        .asmnt {
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
+      <!-- Results Header -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="award" class="txt-custom w-7 h-7"></i>
+            <h1 class="text-5xl font-bold h-txt">Result Report</h1>
+          </div>
+          <button class="btn text-xs" onclick="downloadPDF()">
+            <i data-lucide="download" class="d-i w-6 h-6 mr-2"></i>
+            Download Report
+          </button>
+        </div>
+        <div class="flex items-center justify-between text-sm">
+          <div class="flex items-center space-x-4">
+            <div class="i-d flex flex-col font-semibold italic">
+              <span>Interview Email: {{email}}</span>
+              <span>Date: {{interviewDate}}</span>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <span class="asmnt inline-flex items-center">
+              
+              {% if evaluation_complete %}
+               <span class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></span>
+                Assessment Complete
+              {%else%}
+                <span class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></span>
+                Assessment Not Done
+              {%endif%}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Summary -->
+      <div
+        class="glass rounded-xl shadow-md mb-8 overflow-hidden animate-fade-in"
+      >
+        <div class="px-6 py-4 border-b border-gray-100">
+          <h2 class="text-xl font-semibold">Performance Summary</h2>
+        </div>
+        <div class="px-6 py-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="flex items-center text-green-600 font-medium mb-3">
+                <i data-lucide="check-circle" class="w-4 h-4 mr-2"></i>Strengths
+              </h3>
+              <ul class="space-y-2">
+                {% for strength in strengths %}
+                <li class="flex items-start">
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-500 mt-2 mr-2"></span>
+                  <span>{{ strength }}</span>
+                </li>
+                {% empty %}
+                 <li>No strengths recorded.</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div>
+              <h3 class="flex items-center text-red-600 font-medium mb-3">
+                <i data-lucide="alert-circle" class="w-4 h-4 mr-2"></i>Areas for
+                Improvement
+              </h3>
+              <ul class="space-y-2">
+                {% for weakness in weaknesses %}
+                <li class="flex items-start">
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-600 mt-2 mr-2"></span>
+                  <span>{{ weakness }}</span>
+                </li>
+                {% empty %}
+                <li>No weaknesses recorded.</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Section -->
+
+      <!-- Performance Breakdown -->
+      <div
+        class="glass rounded-xl shadow-md overflow-hidden animate-fade-in mb-8"
+      >
+        <div class="px-6 py-4 border-b border-gray-100">
+          <h2 class="text-xl font-semibold">Performance Breakdown</h2>
+        </div>
+        <div class="px-6 py-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Metric Items -->
+          <div
+            class="metric-card flex items-start space-x-4 p-4 rounded-lg glass shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
+          >
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+              <i data-lucide="check-check"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between flex-wrap">
+                <h3 class="font-semibold text-gray-800 break-words max-w-[70%]">
+                  Accuracy
+                </h3>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full font-medium bg-blue-200 text-blue-800 text-sm px-2.5 py-0.5"
+                >{{ accuracy }}</span
+              >
+              <p class="mt-1 text-sm">
+                Percentage of correct answers provided during the interview
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="metric-card flex items-start space-x-4 p-4 rounded-lg glass shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
+          >
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+              <i data-lucide="message-square"></i>
+            </div>
+            <div class="flex-1 overflow-hidden">
+              <div class="flex items-center justify-between flex-wrap">
+                <h3 class="font-semibold text-gray-800 break-words max-w-[70%]">
+                  Communication
+                </h3>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full font-medium bg-green-400 text-emerald-800 text-sm px-2.5 py-0.5 truncate"
+              >
+                 {{ communication }}
+              </span>
+              <p class="mt-1 text-sm break-words">
+                Fluency and clarity based on speech analysis
+              </p>
+            </div>
+          </div>
+
+          
+          <div
+            class="metric-card flex items-start space-x-4 p-4 rounded-lg glass shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
+          >
+            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+              <i data-lucide="brain-circuit"></i>
+            </div>
+            <div class="flex-1 overflow-hidden">
+              <div class="flex items-center justify-between flex-wrap">
+                <h3 class="font-semibold text-gray-800 break-words max-w-[70%]">
+                  Technical Depth
+                </h3>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full font-medium bg-indigo-200 text-indigo-800 text-sm px-2.5 py-0.5"
+                >{{ technical_depth }}</span
+              >
+              <p class="mt-1 text-sm">
+                AI model scoring based on technical knowledge displayed
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="metric-card flex items-start space-x-4 p-4 rounded-lg glass shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
+          >
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+              <i data-lucide="bar-chart"></i>
+            </div>
+            <div class="flex-1 overflow-hidden">
+              <div class="flex items-center justify-between flex-wrap">
+                <h3 class="font-semibold text-gray-800 break-words max-w-[70%]">
+                  Good Fit
+                </h3>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full font-medium bg-purple-400 text-purple-800 text-sm px-2.5 py-0.5"
+                >{{good_fit}}</span
+              >
+              <p class="mt-1 text-sm">
+                Analysis of tone and hesitation detection during responses
+              </p>
+            </div>
+          </div>
+           <div
+            class="metric-card flex items-start space-x-4 p-4 rounded-lg glass shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
+          >
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+              <i data-lucide="check-check"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between flex-wrap">
+                <h3 class="font-semibold text-gray-800 break-words max-w-[70%]">
+                  Cheating Score
+                </h3>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full font-medium bg-blue-200 text-blue-800 text-sm px-2.5 py-0.5"
+                >{{ cheatingScore }}</span
+              >
+              <p class="mt-1 text-sm">
+                To Identify Potential Malpractice
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      async function downloadPDF() {
+        try {
+          const button = document.querySelector('.btn');
+          const originalContent = button.innerHTML;
+          
+          // Show loading state
+          button.innerHTML = '<i data-lucide="loader" class="d-i w-6 h-6 mr-2 animate-spin"></i>Generating...';
+          button.disabled = true;
+          
+          // Get current URL and extract candidate ID
+          const currentUrl = window.location.pathname;
+          const candidateId = currentUrl.split('/').filter(Boolean).pop();
+          
+          // Make request to download PDF
+          const response = await fetch(`/hr/download-report/${candidateId}/`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/pdf',
+            }
+          });
+          
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `Interview_Report_${candidateId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          } else {
+            throw new Error('Failed to generate PDF');
+          }
+        } catch (error) {
+          console.error('Error downloading PDF:', error);
+          alert('Failed to download PDF. Please try again.');
+        } finally {
+          // Restore button state
+          button.innerHTML = originalContent;
+          button.disabled = false;
+          lucide.createIcons();
+        }
+      }
+    </script>
+  </body>
+</html>

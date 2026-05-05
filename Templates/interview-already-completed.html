@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Completed - Evalio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .h-txt {
+            background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Landscape specific styles */
+        .landscape-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="landscape-container p-4" style="background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));">
+    <div class="w-full max-w-7xl mx-auto glass rounded-2xl shadow-2xl overflow-hidden animate-fade-in">
+        <div class="p-8 lg:p-12">
+            <div class="content-grid">
+                <!-- Left Side - Icon and Main Message -->
+                <div class="text-center lg:text-left">
+                    <!-- Icon -->
+                    <div class="flex justify-center lg:justify-start mb-6">
+                        <div class="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
+                            <svg class="w-12 h-12 lg:w-16 lg:h-16 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Main Heading -->
+                    <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold h-txt mb-4">Interview Already Completed</h1>
+                    
+                    <!-- Description -->
+                    <p class="text-gray-300 text-base lg:text-lg mb-8">
+                        Thank you for your participation! Your interview has been successfully completed and evaluated.
+                    </p>
+
+                    <!-- Action Button -->
+                    <button 
+                        onclick="window.location.href='/evalio'"
+                        class="btn-primary px-8 py-4 text-white font-semibold rounded-lg shadow-lg text-lg"
+                    >
+                        <i class="fas fa-home mr-2"></i>
+                        Back to Home
+                    </button>
+
+                    <!-- Contact Info -->
+                    <p class="text-gray-400 text-sm mt-6">
+                        Have questions? Contact us at 
+                        <a href="mailto:support@evalio.com" class="text-purple-300 hover:text-purple-200 transition-colors">
+                            support@evalio.com
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Right Side - Details and Next Steps -->
+                <div class="space-y-6">
+                    <!-- Interview Details -->
+                    <div class="glass rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-4 flex items-center">
+                            <i class="fas fa-clipboard-list mr-2"></i>
+                            Interview Details
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-400 text-sm block">Candidate</span>
+                                <span class="text-white font-medium text-lg">{{ interviewDetail.name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm block">Position</span>
+                                <span class="text-white font-medium text-lg">{{ interviewDetail.jobRole }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm block">Interview Date</span>
+                                <span class="text-white font-medium text-lg">{{ interviewDetail.interviewDate }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm block">Interview Time</span>
+                                <span class="text-white font-medium text-lg">{{ interviewDetail.interviewTime }}</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-white/20">
+                            <span class="text-gray-400 text-sm block mb-1">Status</span>
+                            <span class="text-green-400 font-medium text-lg flex items-center">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                Completed
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="glass rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-4 flex items-center">
+                            <i class="fas fa-road mr-2"></i>
+                            What's Next?
+                        </h3>
+                        <div class="space-y-4 text-gray-300">
+                            <div class="flex items-start space-x-3 p-3 rounded-lg bg-white/5">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-clock text-purple-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Review Process</h4>
+                                    <span class="text-sm">Our team is reviewing your interview responses</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 p-3 rounded-lg bg-white/5">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-envelope text-purple-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Email Update</h4>
+                                    <span class="text-sm">You will receive an update via email within 3-5 business days</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 p-3 rounded-lg bg-white/5">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-phone text-purple-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Next Steps</h4>
+                                    <span class="text-sm">If selected, our HR team will contact you for the next steps</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>

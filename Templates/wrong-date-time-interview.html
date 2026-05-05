@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Status</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom animation for fade-in effect */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Animation for hover scale effect */
+    .hover-scale:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Background gradient */
+    body {
+      background: linear-gradient(135deg, #74b9ff, #a29bfe, #ff6b81);
+      background-size: 300% 300%;
+      animation: gradientAnimation 5s ease infinite;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans flex items-center justify-center h-screen">
+
+  <!-- Container with fade-in animation -->
+  <div class="w-full max-w-4xl p-8 space-y-10 fade-in">
+
+    <!-- "Too Early" Section: Only shown if status == 0 -->
+    {% if status == 2 %}
+    <div class="bg-white bg-opacity-90 text-blue-800 p-8 rounded-3xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:bg-blue-100 hover-scale">
+      <h2 class="text-3xl font-extrabold text-center mb-4 text-indigo-600">You're Too Early for the Interview!</h2>
+      <p class="text-xl text-center">Your interview is scheduled for:</p>
+      <p class="text-2xl font-bold text-center text-gray-700">{{interviewDetail.interviewDate}} at {{interviewDetail.interviewTime}}</p>
+      <p class="mt-4 text-lg text-center text-gray-600">You arrived too early. You have plenty of time before the interview starts, so relax and prepare yourself. Take a moment to breathe and go over your notes.</p>
+    </div>
+
+    {% elif status == 0 %}
+
+    <!-- "Late" Section: Only shown if status == 2 -->
+    <div class="bg-white bg-opacity-90 text-red-800 p-8 rounded-3xl shadow-xl transform transition-all hover:scale-105 hover:shadow-2xl hover:bg-red-100 hover-scale">
+      <h2 class="text-3xl font-extrabold text-center mb-4 text-red-600">You're Late for the Interview!</h2>
+      <p class="text-xl text-center">Your interview was scheduled for:</p>
+      <p class="text-2xl font-bold text-center text-gray-700">{{interviewDetail.interviewDate}} at {{interviewDetail.interviewTime}}</p>
+      <p class="mt-4 text-lg text-center text-gray-600">Unfortunately, the interview time has already passed. You can no longer attend the interview.</p>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Tailwind's animated fade-in effect -->
+  <script>
+    // Adds fade-in animation to the container when the page loads
+    window.onload = () => {
+      document.querySelector('.fade-in').classList.add('fade-in');
+    };
+  </script>
+</body>
+</html>

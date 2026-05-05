@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intelligent Hiring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        overflow: auto;
+        font-family: "Inter", serif;
+        color: #fff;
+      }
+
+      .h-txt {
+        font-size: 3rem;
+        background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .btn {
+        font-weight: 600;
+        cursor: pointer;
+        color: #fff;
+        display: flex;
+        width: 10.8125rem;
+        height: 2.875rem;
+        padding: 0.125rem 0.9375rem;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.297);
+        background: rgba(98, 42, 154, 0.887);
+        box-shadow: 0px 0px 6px 3px rgba(255, 255, 255, 0.406) inset;
+        backdrop-filter: blur(14px);
+      }
+
+      .txt-custom {
+        color: #9e29d0;
+      }
+
+      .p-c {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .glass,
+      .glassCandidate {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .glass:hover,
+      .glassCandidate:hover {
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+      }
+
+      .metric-card {
+        transition: all 0.3s ease-in-out;
+      }
+      .metric-card:hover {
+        transform: scale(1.02);
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .table-row-hover {
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        transform-origin: center;
+      }
+      .table-row-hover:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: scale(1.01) translateZ(0);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+      }
+
+      .table-container {
+        width: 100%;
+        position: relative;
+        overflow-x: auto;
+        transition: box-shadow 0.2s;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+      }
+
+      .table-container::-webkit-scrollbar {
+        height: 8px;
+        background: transparent;
+      }
+
+      .table-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+      }
+
+      .table-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .table-container:hover {
+        box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.2);
+      }
+
+      .custom-table {
+        border-spacing: 0 0.5rem;
+        border-collapse: separate;
+        min-width: 800px;
+      }
+
+      .table-container::-webkit-scrollbar {
+        height: 0px;
+        transition: height 0.2s;
+      }
+      .table-container:hover::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      /* Mobile-specific styles (480px and below) */
+      @media (max-width: 480px) {
+        .max-w-7xl {
+          padding: 0.5rem;
+          width: 100%;
+          max-width: 100%;
+        }
+        .mb-8 {
+          margin-bottom: 1.5rem;
+        }
+        .text-3xl {
+          font-size: 1.25rem;
+        }
+        .text-lg {
+          font-size: 0.875rem;
+        }
+        .grid-cols-1 {
+          gap: 0.75rem;
+        }
+        .p-6 {
+          padding: 0.75rem;
+        }
+        .h-6 {
+          height: 1.25rem;
+          width: 1.25rem;
+        }
+
+        /* FeatureHighlights Mobile Styles */
+        .mb-12.grid {
+          grid-template-columns: 1fr !important;
+          gap: 0.75rem !important;
+          padding: 0 0.5rem;
+        }
+        .glass.p-6 {
+          width: 100% !important;
+          margin-bottom: 0.5rem !important;
+          padding: 0.75rem !important;
+        }
+        .glass .text-lg {
+          font-size: 0.75rem !important;
+        }
+        .glass .text-sm {
+          font-size: 0.65rem !important;
+        }
+        .glass h3 {
+          font-size: 0.75rem !important;
+        }
+        .glass p {
+          font-size: 0.65rem !important;
+        }
+
+        /* Header text adjustments */
+        .h-txt {
+          font-size: 1.5rem !important;
+        }
+        .p-c {
+          font-size: 0.75rem !important;
+        }
+      }
+
+      /* Tablet-specific styles (768px and below) */
+      @media (max-width: 768px) {
+        .max-w-7xl {
+          padding: 1rem;
+          width: 100%;
+        }
+        .grid-cols-4 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .text-3xl {
+          font-size: 1.5rem;
+        }
+        .text-lg {
+          font-size: 0.875rem;
+        }
+        .p-6 {
+          padding: 1rem;
+        }
+
+        /* Header text adjustments for tablet */
+        .h-txt {
+          font-size: 2rem !important;
+        }
+        .p-c {
+          font-size: 0.975rem !important;
+        }
+      }
+
+      /* FeatureHighlights Responsive */
+      @media (max-width: 640px) {
+        .mb-12.grid {
+          grid-template-columns: 1fr !important;
+          gap: 0.75rem !important;
+          padding: 0 0.5rem;
+        }
+        .glass.p-6 {
+          padding: 0.75rem !important;
+          width: 100% !important;
+        }
+        .glass .text-lg {
+          font-size: 0.75rem !important;
+        }
+        .glass .text-sm {
+          font-size: 0.65rem !important;
+        }
+      }
+
+      /* CandidateTable Responsive */
+      @media (max-width: 640px) {
+        .glassCandidate {
+          padding: 0.5rem !important;
+        }
+        .table-container {
+          margin: 0 -0.5rem !important;
+          padding: 0 0.5rem !important;
+        }
+        .custom-table {
+          font-size: 0.8rem !important;
+          min-width: 600px !important; /* Ensures horizontal scroll */
+        }
+        .custom-table th,
+        .custom-table td {
+          padding: 0.4rem 0.5rem !important;
+        }
+        .h-10 {
+          height: 1.5rem !important;
+          width: 1.5rem !important;
+        }
+        .ml-4 {
+          margin-left: 0.5rem !important;
+        }
+        .space-x-2 {
+          gap: 0.15rem !important;
+        }
+        .h-5 {
+          height: 0.9rem !important;
+          width: 0.9rem !important;
+        }
+        /* Optionally hide less important columns (like Status) */
+        .custom-table th:nth-child(4),
+        .custom-table td:nth-child(4) {
+          display: none !important;
+        }
+      }
+
+      /* Extra: Make table scrollable on mobile */
+      .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <!-- HiringHeader -->
+      <div class="mb-8">
+        <div class="flex items-center space-x-3">
+          <i data-lucide="brain-cog" class="w-8 h-8 text-blue-600"></i>
+          <h1 class="h-txt text-5xl font-bold p-2">
+            Intelligent Hiring Suggestions
+          </h1>
+        </div>
+        <p class="p-c mt-2 text-lg max-w-3xl">
+          Leverage our AI-powered insights to make smarter hiring decisions
+          based on candidate interview performance.
+        </p>
+      </div>
+
+      <!-- FeatureHighlights -->
+      <div class="mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glass rounded-lg p-6 flex flex-col h-full">
+          <div class="mb-4 text-blue-600">
+            <i data-lucide="users" class="h-6 w-6"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">
+            AI-Driven Candidate Matching
+          </h3>
+          <p class="p-c text-sm">
+            NLP analysis to recommend top candidates based on interview
+            responses and requirements.
+          </p>
+        </div>
+        <div class="glass rounded-lg p-6 flex flex-col h-full">
+          <div class="mb-4 text-blue-600">
+            <i data-lucide="bar-chart-2" class="h-6 w-6"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Fit Score & Ranking</h3>
+          <p class="p-c text-sm">
+            Proprietary algorithm assigns a score between 0–100 with comparative
+            ranking.
+          </p>
+        </div>
+        <div class="glass rounded-lg p-6 flex flex-col h-full">
+          <div class="mb-4 text-blue-600">
+            <i data-lucide="briefcase" class="h-6 w-6"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Role-Based Suggestions</h3>
+          <p class="p-c text-sm">
+            Maps candidate skills and strengths to appropriate job roles within
+            your organization.
+          </p>
+        </div>
+        <div class="glass rounded-lg p-6 flex flex-col h-full">
+          <div class="mb-4 text-blue-600">
+            <i data-lucide="alert-circle" class="h-6 w-6"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Red Flags & Alerts</h3>
+          <p class="p-c text-sm">
+            Identifies potential concerns such as hesitation, weak answers, or
+            inconsistencies.
+          </p>
+        </div>
+      </div>
+
+      <!-- CandidateTable -->
+      <div class="glassCandidate rounded-lg shadow">
+        <div
+          class="px-6 py-4 border-b border-gray-200 flex justify-between items-center"
+        >
+          <h2 class="text-xl font-semibold">Candidate Recommendations</h2>
+          <span class="text-sm text-green-500"
+            >
+            <!-- {{ candidate_count }} -->
+              {{count}} candidates</span
+          >
+        </div>
+        <div class="table-container">
+          <table class="min-w-full divide-y divide-gray-200 custom-table">
+            <thead>
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-semibold text-blue-600 uppercase tracking-wider"
+                >
+                  <div class="flex items-center space-x-1">
+                    <span>Candidate</span>
+                    <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                  </div>
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-semibold text-blue-600 uppercase tracking-wider"
+                >
+                  <div class="flex items-center space-x-1">
+                    <span>Fit Score</span>
+                    <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                  </div>
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-semibold text-blue-600 uppercase tracking-wider"
+                >
+                  <div class="flex items-center space-x-1">
+                    <span>Recommended Role</span>
+                    <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                  </div>
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-semibold text-blue-600 uppercase tracking-wider"
+                >
+                  <div class="flex items-center space-x-1">
+                    <span>Status</span>
+                    <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                  </div>
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-semibold text-blue-600 uppercase tracking-wider"
+                >
+                  <div class="flex items-center space-x-1">
+                    <span>Cheating Score</span>
+                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="glass divide-y divide-gray-200">
+              {% for candidate in candidates %}
+              <tr class="table-row-hover glass">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">
+                          {{ candidate.name }} 
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <span class="text-sm font-medium text-gray-900 mr-2"
+                      >
+                       {{ candidate.good_fit }} 
+                      </span
+                    >
+                    <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                      <div
+                        class="h-2.5 rounded-full bg-green-500 bg-yellow-500 bg-red-500"></div>
+                         
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                   {{ candidate.jobRole }} 
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-full bg-green-100 text-green-800 bg-blue-100 text-blue-800 bg-yellow-100 text-yellow-800 bg-red-100 text-red-800"
+                  >
+                   {{candidate.status}}
+
+                  <!-- {% if candidate.cheatingScore != "normal" %}
+                        <span>Needs Review</span>
+                  {% else %}
+                      <span>Good Fit</span>
+                  {% endif %} -->
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <span class="text-sm font-medium text-gray-900 mr-2">
+                       {{ candidate.cheatingScore }}
+                      </span>
+                    <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                      <div
+                        class="h-2.5 rounded-full bg-red-500 bg-orange-500 bg-yellow-500 bg-green-500"
+                        
+                      ></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

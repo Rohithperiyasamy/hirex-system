@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Feedback Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeInUp {
+        animation: fadeInUp 0.5s ease-out;
+      }
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .animate-scaleIn {
+        animation: scaleIn 0.5s ease-out;
+      }
+    </style>
+
+    <style>
+      body {
+        background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        overflow: auto;
+        font-family: "Inter", serif;
+        color: white;
+        min-height: 100vh;
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .btn {
+        font-weight: 600;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        width: 10.8125rem;
+        height: 2.875rem;
+        padding: 0.125rem 0.9375rem;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.297);
+        background: rgba(98, 42, 154, 0.887);
+        box-shadow: 0px 0px 6px 3px rgba(255, 255, 255, 0.406) inset;
+        backdrop-filter: blur(14px);
+      }
+
+      .h-txt {
+        background: linear-gradient(180deg, #fff 30.17%, #9e29d0 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <h1 class="text-4xl font-extrabold text-center mb-12 sm:text-6xl">
+      <span class="h-txt">We Value Your Feedback</span>
+    </h1>
+
+    <div
+      id="formContainer"
+      class="glass rounded-lg shadow-xl p-8 max-w-md w-full animate-fadeInUp"
+    >
+      <form id="feedbackForm" class="space-y-6" method="post">
+        {% csrf_token %}
+        <div>
+          <label for="feedback" class="text-lg font-bold italic"
+            >Your Feedback</label
+          >
+          <textarea
+            id="feedback"
+            placeholder="Tell us what you think..."
+            class="glass mt-2 w-full p-2 rounded-md"
+            name="feedback_text"
+            required
+          ></textarea>
+        </div>
+        <div>
+          <label class="text-lg font-medium">Rating</label>
+          <div id="ratingContainer" class="flex justify-center space-x-2 mt-2">
+            <!-- Stars will be dynamically added here -->
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <button type="submit" class="btn">Submit Feedback</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const formContainer = document.getElementById("formContainer");
+        const feedbackForm = document.getElementById("feedbackForm");
+        const ratingContainer = document.getElementById("ratingContainer");
+        let currentRating = 0;
+
+        // Create star rating
+        for (let i = 1; i <= 5; i++) {
+          const star = document.createElement("button");
+          star.type = "button";
+          star.className =
+            "text-3xl text-gray-300 transition-transform duration-200 ease-in-out transform hover:scale-110 focus:outline-none";
+          star.innerHTML = "★";
+          star.setAttribute("data-rating", i);
+
+          star.addEventListener("click", function () {
+            currentRating = i;
+            updateStars();
+          });
+
+          ratingContainer.appendChild(star);
+        }
+
+        function updateStars() {
+          const stars = ratingContainer.children;
+          for (let i = 0; i < stars.length; i++) {
+            if (i < currentRating) {
+              stars[i].classList.add("text-yellow-400");
+              stars[i].classList.remove("text-gray-300");
+            } else {
+              stars[i].classList.add("text-gray-300");
+              stars[i].classList.remove("text-yellow-400");
+            }
+          }
+        }
+
+        feedbackForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const feedback = document.getElementById("feedback").value;
+
+          // Here you would typically send the feedback and rating to your server
+          console.log("Feedback:", feedback);
+          console.log("Rating:", currentRating);
+
+          // Show thank you message
+          formContainer.innerHTML = `
+                    <div class="text-center animate-scaleIn">
+                        <h2 class="text-2xl font-bold text-indigo-700 mb-4">Thank You!</h2>
+                        <p class="text-gray-600">We appreciate your feedback. It helps us improve our services.</p>
+                    </div>
+                `;
+        });
+      });
+    </script> -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const formContainer = document.getElementById("formContainer");
+        const feedbackForm = document.getElementById("feedbackForm");
+        const ratingContainer = document.getElementById("ratingContainer");
+        let currentRating = 0;
+    
+        // Create star rating
+        for (let i = 1; i <= 5; i++) {
+          const star = document.createElement("button");
+          star.type = "button";
+          star.className =
+            "text-3xl text-gray-300 transition-transform duration-200 ease-in-out transform hover:scale-110 focus:outline-none";
+          star.innerHTML = "★";
+          star.setAttribute("data-rating", i);
+    
+          star.addEventListener("click", function () {
+            currentRating = i;
+            updateStars();
+          });
+    
+          ratingContainer.appendChild(star);
+        }
+    
+        function updateStars() {
+          const stars = ratingContainer.children;
+          for (let i = 0; i < stars.length; i++) {
+            if (i < currentRating) {
+              stars[i].classList.add("text-yellow-400");
+              stars[i].classList.remove("text-gray-300");
+            } else {
+              stars[i].classList.add("text-gray-300");
+              stars[i].classList.remove("text-yellow-400");
+            }
+          }
+        }
+    
+        feedbackForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const feedback = document.getElementById("feedback").value;
+    
+          if (!feedback || currentRating === 0) {
+            alert("Please provide feedback and a rating.");
+            return;
+          }
+    
+          const formData = new FormData();
+          formData.append("feedback_text", feedback);
+          formData.append("rating", currentRating);
+    
+          // Send data to the server using AJAX (Fetch API)
+          fetch("http://127.0.0.1:8000/interview/feedback/", {
+            method: "POST",
+            body: formData,
+            headers: {
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value, // CSRF token for security
+            },
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                formContainer.innerHTML = `
+                  <div class="text-center animate-scaleIn">
+                      <h2 class="text-2xl font-bold text-white mb-4">Thank You!</h2>
+                      <p class="text-white/80">We appreciate your feedback. It helps us improve our services.</p>
+                  </div>
+                `;
+              } else {
+                alert("Error: " + data.message);
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+              alert("An error occurred. Please try again.");
+            });
+        });
+      });
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR SignUp - Evalio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo-glow {
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    }
+
+    .alert {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="flex justify-center items-center min-h-screen p-4"
+  style="background: radial-gradient(circle, rgb(34, 16, 55), rgb(3, 1, 5));">
+  <div class="w-full max-w-md mx-auto glass rounded-2xl shadow-2xl overflow-hidden">
+    <div class="px-8 py-8">
+
+      {% if messages %}
+      <div class="mb-6 space-y-3">
+        {% for message in messages %}
+        <div class="alert px-4 py-3 rounded-lg text-sm font-medium
+                        {% if message.tags == 'error' %}
+                            bg-red-500 bg-opacity-20 text-red-200 border border-red-400 border-opacity-30
+                        {% elif message.tags == 'success' %}
+                            bg-green-500 bg-opacity-20 text-green-200 border border-green-400 border-opacity-30
+                        {% else %}
+                            bg-blue-500 bg-opacity-20 text-blue-200 border border-blue-400 border-opacity-30
+                        {% endif %}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="flex justify-center mx-auto mb-6">
+        <div class="logo-glow">
+          <img  style="transform: rotate(270deg);" class="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="Logo" />
+        </div>
+      </div>
+
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-white mb-2">Join Evalio</h1>
+        <p class="text-gray-300">Create your HR account</p>
+      </div>
+
+      <form id="form" method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <div class="space-y-2">
+          <label for="name" class="text-sm font-medium text-gray-200">Full Name</label>
+          <input name="name" id="name" type="text" required
+            class="glass-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300"
+            placeholder="Enter your full name" />
+        </div>
+
+        <div class="space-y-2">
+          <label for="phone" class="text-sm font-medium text-gray-200">Phone Number</label>
+          <input name="phone" id="phone" type="tel" pattern="\d{10}" required
+            class="glass-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300"
+            placeholder="10-digit phone number" title="Please enter a 10-digit phone number" />
+        </div>
+
+        <div class="space-y-2">
+          <label for="email" class="text-sm font-medium text-gray-200">Email Address</label>
+          <input name="email" id="email" type="email" required
+            class="glass-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300"
+            placeholder="Enter your email" />
+        </div>
+
+        <div class="space-y-2">
+          <label for="password" class="text-sm font-medium text-gray-200">Password</label>
+          <input name="password" id="password" type="password" required
+            class="glass-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300"
+            placeholder="Create a strong password" />
+        </div>
+
+        <div class="space-y-2">
+          <label for="company-name" class="text-sm font-medium text-gray-200">Company Name</label>
+          <input name="company" id="company-name" type="text" required
+            class="glass-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300"
+            placeholder="Enter your company name" />
+        </div>
+
+        <button type="submit"
+          class="btn-primary w-full py-3 text-white font-semibold rounded-lg shadow-lg mt-6">
+          Create Account
+        </button>
+      </form>
+    </div>
+
+    <div class="px-8 py-6 bg-black bg-opacity-20 border-t border-white border-opacity-10">
+      <p class="text-center text-gray-300">
+        Already have an account?
+        <a href="{% url 'login' %}"
+          class="text-purple-300 hover:text-purple-200 font-semibold transition-colors">
+          Sign in here
+        </a>
+      </p>
+    </div>
+  </div>
+</body>
+
+</html>
